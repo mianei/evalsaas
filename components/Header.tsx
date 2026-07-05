@@ -21,14 +21,14 @@ export default function Header() {
   if (isLanding) return null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-black/80 backdrop-blur-xl">
+      <div className="kit-container flex h-16 items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-black">
               IE
             </div>
-            <span className="hidden font-semibold text-slate-900 sm:inline">
+            <span className="hidden font-semibold tracking-tight sm:inline">
               InterviewEval
             </span>
           </Link>
@@ -40,8 +40,8 @@ export default function Header() {
                 className={cn(
                   "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
                   pathname.startsWith(item.href)
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-white/10 text-white"
+                    : "text-zinc-400 hover:bg-white/5 hover:text-white"
                 )}
               >
                 {item.label}
@@ -51,27 +51,27 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-1 rounded-lg border border-slate-200 p-0.5 sm:flex">
+          <div className="hidden items-center gap-0.5 rounded-full border border-white/10 p-0.5 sm:flex">
             {ROLES.map((role) => (
               <button
                 key={role}
                 onClick={() => switchRole(role)}
                 className={cn(
-                  "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
+                  "rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
                   currentUser.role === role
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-white text-black"
+                    : "text-zinc-400 hover:text-white"
                 )}
               >
                 {ROLE_LABELS[role]}
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1.5">
-            <div className="h-6 w-6 rounded-full bg-indigo-200 text-center text-xs leading-6 text-indigo-700">
+          <div className="flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/20 text-xs font-medium text-violet-300">
               {currentUser.name[0]}
             </div>
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-zinc-300">
               {currentUser.name}
             </span>
           </div>

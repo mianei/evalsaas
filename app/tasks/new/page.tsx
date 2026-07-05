@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 export default function CreateTaskPage() {
   const router = useRouter();
@@ -43,79 +44,77 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <h1 className="text-2xl font-bold text-slate-900">创建评估任务</h1>
-      <p className="mt-1 text-sm text-slate-500">
+    <div className="kit-container max-w-3xl py-10">
+      <p className="kit-section-label mb-2">新建</p>
+      <h1 className="text-2xl font-bold tracking-tight">创建评估任务</h1>
+      <p className="mt-1 text-sm text-zinc-500">
         上传候选人简历、粘贴 JD，分配给面试官
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+      <form onSubmit={handleSubmit} className="kit-card mt-8 space-y-6 p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="text-sm font-medium text-slate-700">
-              候选人姓名 <span className="text-red-500">*</span>
+            <label className="text-sm font-medium text-zinc-300">
+              候选人姓名 <span className="text-red-400">*</span>
             </label>
             <input
               value={candidateName}
               onChange={(e) => setCandidateName(e.target.value)}
               required
-              className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="kit-input mt-1.5"
               placeholder="赵小明"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-700">
-              岗位名称 <span className="text-red-500">*</span>
+            <label className="text-sm font-medium text-zinc-300">
+              岗位名称 <span className="text-red-400">*</span>
             </label>
             <input
               value={positionTitle}
               onChange={(e) => setPositionTitle(e.target.value)}
               required
-              className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="kit-input mt-1.5"
               placeholder="高级前端工程师"
             />
           </div>
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700">
-            候选人简历
-          </label>
+          <label className="text-sm font-medium text-zinc-300">候选人简历</label>
           <textarea
             value={resume}
             onChange={(e) => setResume(e.target.value)}
             rows={8}
-            className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 font-mono text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="kit-textarea mt-1.5 font-mono"
             placeholder="粘贴简历内容（支持纯文本 / Markdown）"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700">岗位 JD</label>
+          <label className="text-sm font-medium text-zinc-300">岗位 JD</label>
           <textarea
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             rows={5}
-            className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="kit-textarea mt-1.5"
             placeholder="粘贴岗位描述"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700">
-            分配面试官
-          </label>
+          <label className="text-sm font-medium text-zinc-300">分配面试官</label>
           <div className="mt-2 flex flex-wrap gap-2">
             {interviewers.map((m) => (
               <button
                 key={m.id}
                 type="button"
                 onClick={() => toggleInterviewer(m.name)}
-                className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={cn(
+                  "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                   selectedInterviewers.includes(m.name)
-                    ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                    : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                }`}
+                    ? "border-white bg-white text-black"
+                    : "border-white/20 text-zinc-400 hover:border-white/40 hover:text-white"
+                )}
               >
                 {m.name}
               </button>
@@ -127,14 +126,11 @@ export default function CreateTaskPage() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            className="kit-btn-secondary !py-2 !text-sm"
           >
             取消
           </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-          >
+          <button type="submit" className="kit-btn-primary !py-2 !text-sm">
             创建任务
           </button>
         </div>

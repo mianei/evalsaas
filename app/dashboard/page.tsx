@@ -7,9 +7,9 @@ import type { EvaluationStatus } from "@/lib/types";
 import { STATUS_LABELS } from "@/lib/types";
 
 const COLUMNS: { status: EvaluationStatus; color: string }[] = [
-  { status: "pending", color: "bg-amber-500" },
-  { status: "evaluated", color: "bg-blue-500" },
-  { status: "confirmed", color: "bg-emerald-500" },
+  { status: "pending", color: "bg-amber-400" },
+  { status: "evaluated", color: "bg-blue-400" },
+  { status: "confirmed", color: "bg-emerald-400" },
 ];
 
 export default function DashboardPage() {
@@ -21,18 +21,16 @@ export default function DashboardPage() {
       : tasks;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="kit-container py-10">
+      <div className="mb-10 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">评估进度看板</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="kit-section-label mb-2">工作台</p>
+          <h1 className="text-2xl font-bold tracking-tight">评估进度看板</h1>
+          <p className="mt-1 text-sm text-zinc-500">
             共 {filtered.length} 个评估任务
           </p>
         </div>
-        <Link
-          href="/tasks/new"
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
+        <Link href="/tasks/new" className="kit-btn-primary !py-2.5 !text-sm">
           + 创建任务
         </Link>
       </div>
@@ -43,17 +41,17 @@ export default function DashboardPage() {
           return (
             <div key={status}>
               <div className="mb-4 flex items-center gap-2">
-                <div className={`h-2.5 w-2.5 rounded-full ${color}`} />
-                <h2 className="font-semibold text-slate-700">
+                <div className={`h-2 w-2 rounded-full ${color}`} />
+                <h2 className="text-sm font-semibold text-zinc-300">
                   {STATUS_LABELS[status]}
                 </h2>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+                <span className="rounded-full bg-white/5 px-2 py-0.5 text-xs font-medium text-zinc-500">
                   {columnTasks.length}
                 </span>
               </div>
               <div className="space-y-3">
                 {columnTasks.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-400">
+                  <div className="rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-zinc-600">
                     暂无任务
                   </div>
                 ) : (
