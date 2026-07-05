@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>InterviewEval · 面试评估 SaaS v1.0</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--brand:#4f46e5;--brand-light:#eef2ff;--ink:#0f172a;--ink2:#64748b;--line:#e2e8f0;--bg:#f8fafc;--r:12px}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+a{color:var(--brand);text-decoration:none}
+button,input,textarea,select{font:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:500;font-size:14px;transition:.15s}
+.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:#4338ca}
+.btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn-secondary:hover{background:#f1f5f9}
+.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
+.btn-sm{padding:4px 10px;font-size:12px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1120px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}
+.logo-icon{width:32px;height:32px;border-radius:8px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+nav{display:flex;gap:4px}
+nav a{padding:6px 12px;border-radius:8px;font-size:14px;color:var(--ink2);font-weight:500}
+nav a.active,nav a:hover{background:var(--brand-light);color:var(--brand)}
+.role-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff}
+.role-switch button{padding:4px 8px;border:none;background:transparent;border-radius:6px;font-size:11px;cursor:pointer;color:var(--ink2)}
+.role-switch button.active{background:var(--brand);color:#fff}
+.container{max-width:1120px;margin:0 auto;padding:24px 16px}
+.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
+.page-sub{color:var(--ink2);font-size:14px;margin-bottom:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.grid-3{display:grid;gap:20px;grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid-3{grid-template-columns:1fr}}
+.col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:600;font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%}
+.task-card{display:block;background:#fff;border:1px solid var(--line);border-left:4px solid;border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:box-shadow .15s;color:inherit}
+.task-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.task-card.pending{border-left-color:#f59e0b}
+.task-card.evaluated{border-left-color:#3b82f6}
+.task-card.confirmed{border-left-color:#10b981}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-amber{background:#fef3c7;color:#b45309}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-green{background:#d1fae5;color:#047857}
+.badge-red{background:#fee2e2;color:#b91c1c}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+.form-row{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;cursor:pointer;background:#fff}
+.chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
+.dim-card{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px;background:#fff}
+.dim-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.dim-score{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+.score-bar{height:6px;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);margin:8px 0}
+.score-fill{height:100%;border-radius:999px;background:inherit}
+.evidence{font-size:13px;color:var(--ink2);padding-left:12px;border-left:2px solid #c7d2fe;margin-top:4px}
+.override-note{margin-top:8px;padding:8px;background:#fffbeb;border-radius:6px;font-size:12px;color:#92400e}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-size:18px;margin-bottom:12px}
+.score-btns{display:flex;gap:8px;margin:12px 0}
+.score-btns button{width:40px;height:40px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700}
+.score-btns button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.landing{min-height:100vh;background:linear-gradient(180deg,#eef2ff,#fff 40%,#f8fafc)}
+.landing-hero{text-align:center;padding:80px 16px 40px;max-width:720px;margin:0 auto}
+.landing-hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.2;margin:16px 0}
+.landing-hero p{color:var(--ink2);font-size:17px;margin-bottom:32px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:640px;margin:48px auto;padding:0 16px}
+.stat-card{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.stat-val{font-size:28px;font-weight:800;color:var(--brand)}
+.stat-label{font-size:13px;color:var(--ink2);margin-top:4px}
+.features{max-width:960px;margin:0 auto;padding:40px 16px 80px;display:grid;gap:16px;grid-template-columns:1fr 1fr}
+@media(max-width:640px){.features{grid-template-columns:1fr}}
+.feature-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+.empty{border:2px dashed var(--line);border-radius:var(--r);padding:32px;text-align:center;color:var(--ink2);font-size:14px}
+.layout-2{display:grid;gap:20px;grid-template-columns:1fr 1fr}
+@media(max-width:900px){.layout-2{grid-template-columns:1fr}}
+.pre-box{background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;white-space:pre-wrap;max-height:200px;overflow:auto;color:var(--ink2)}
+.rating-lg{font-size:36px;font-weight:800}
+.alert{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px}
+.alert-warn{background:#fffbeb;color:#92400e}
+.alert-err{background:#fef2f2;color:#b91c1c}
+.alert-info{background:#eff6ff;color:#1d4ed8}
+.hidden{display:none!important}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const STORAGE_KEY = "interview-eval-html-v1";
+const SETTINGS_KEY = "interview-eval-settings";
+
+const DIMENSION_LABELS = {
+  professional: { label: "专业能力", desc: "岗位所需的硬技能和知识深度" },
+  project: { label: "项目经验", desc: "过往项目的复杂度、角色和成果" },
+  communication: { label: "沟通表达", desc: "逻辑清晰度和信息组织能力" },
+  fit: { label: "匹配度", desc: "技能、经验和岗位要求的契合度" },
+  growth: { label: "成长潜力", desc: "学习能力、自驱力和职业规划" },
+};
+
+const RATING_STYLE = {
+  "Strong Hire": { bg: "#d1fae5", color: "#047857" },
+  "Hire": { bg: "#dbeafe", color: "#1d4ed8" },
+  "Weak Hire": { bg: "#fef3c7", color: "#b45309" },
+  "No Hire": { bg: "#fee2e2", color: "#b91c1c" },
+};
+
+const STATUS_LABELS = { pending: "待评估", evaluated: "已评估", confirmed: "已确认" };
+const ROLE_LABELS = { hr: "HR", interviewer: "面试官", hiring_manager: "招聘负责人" };
+
+const DEFAULT_TEAM = [
+  { id: "u1", name: "张敏", role: "hr" },
+  { id: "u2", name: "李工", role: "interviewer" },
+  { id: "u3", name: "王芳", role: "interviewer" },
+  { id: "u4", name: "陈总", role: "hiring_manager" },
+];
+
+const DEMO_TASKS = [
+  {
+    id: "demo-1", candidateName: "赵小明", positionTitle: "高级前端工程师",
+    resume: `赵小明 | 5年前端开发经验\n\n2021.03 - 至今 | 某互联网 SaaS 公司 | 高级前端工程师\n- 负责 B 端管理后台，React + TypeScript\n- 主导组件库建设，开发效率提升 40%\n- 优化首屏加载，LCP 从 3.2s 降至 1.1s\n\n技能：React, TypeScript, Node.js`,
+    jobDescription: "3年以上前端经验，精通 React/TypeScript，有 B 端 SaaS 经验优先",
+    interviewNotes: "", assignedInterviewers: ["李工", "王芳"], status: "pending",
+    createdBy: "张敏", createdAt: new Date(Date.now()-864e5).toISOString(),
+    updatedAt: new Date(Date.now()-864e5).toISOString(), overrides: [],
+  },
+  {
+    id: "demo-2", candidateName: "孙丽华", positionTitle: "产品经理",
+    resume: "孙丽华 | 3年产品经验\n2022 - 至今 | AI 创业公司 | 产品经理\n- AI 写作助手从 0 到 1，DAU 10万+",
+    jobDescription: "2年以上产品经验，有 AI 产品经验优先",
+    interviewNotes: "对 AI 产品理解较深，沟通结构清晰，结论先行。B 端经验较少。",
+    assignedInterviewers: ["李工"], status: "evaluated", createdBy: "张敏",
+    createdAt: new Date(Date.now()-1728e5).toISOString(),
+    updatedAt: new Date(Date.now()-36e5).toISOString(), overrides: [],
+    report: {
+      overallScore: 82, rating: "Strong Hire",
+      dimensions: [
+        { key: "professional", score: 4, evidence: ["熟悉 Prompt 工程"] },
+        { key: "project", score: 4, evidence: ["AI 写作助手从 0 到 1"] },
+        { key: "communication", score: 5, evidence: ["结论先行，结构清晰"] },
+        { key: "fit", score: 3, evidence: ["B 端经验不足"] },
+        { key: "growth", score: 4, evidence: ["有评测迭代意识"] },
+      ],
+      followUps: [{ id: "fu-1", question: "B 端 SaaS 决策逻辑与 C 端有何不同？", focus: "B 端思维", expectedDirection: "从 ROI 角度分析" }],
+      redFlags: [], summary: "AI 产品经验丰富，沟通优秀，B 端经验偏少，推荐 Strong Hire。",
+      generatedAt: new Date(Date.now()-36e5).toISOString(),
+    },
+  },
+];
+
+const SYSTEM_PROMPT = `你是 InterviewEval 的 AI 评估引擎。基于简历和面试记录生成结构化评估报告。中文输出。
+五维：professional/project/communication/fit/growth，每维 1-5 分。
+rating: Strong Hire(85+)/Hire(70+)/Weak Hire(55+)/No Hire(<55)
+严格输出 JSON，无 markdown：
+{"overallScore":78,"rating":"Hire","dimensions":[{"key":"professional","score":4,"evidence":["..."]},...五维],"followUps":[{"question":"...","focus":"...","expectedDirection":"..."}],"redFlags":[{"type":"...","description":"...","verificationMethod":"...","severity":"high|medium|low"}],"summary":"200字总结"}`;
+
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) return JSON.parse(s);
+  } catch {}
+  return { currentUser: DEFAULT_TEAM[0], team: DEFAULT_TEAM, tasks: DEMO_TASKS };
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadSettings() {
+  try {
+    const s = localStorage.getItem(SETTINGS_KEY);
+    if (s) return JSON.parse(s);
+  } catch {}
+  return { apiKey: "", baseUrl: "http://127.0.0.1:8765/v1", model: "deepseek-chat" };
+}
+
+function saveSettings(settings) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+function esc(s) {
+  const d = document.createElement("div");
+  d.textContent = s ?? "";
+  return d.innerHTML;
+}
+
+function fmtDate(iso) {
+  return new Date(iso).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function genId() {
+  return Date.now() + "-" + Math.random().toString(36).slice(2, 7);
+}
+
+function getEffectiveScore(key, aiScore, overrides) {
+  const o = overrides.find(x => x.dimensionKey === key);
+  return o ? o.newScore : aiScore;
+}
+
+function generateMock(input) {
+  const combined = input.resume + input.interviewNotes + input.jobDescription;
+  let overall = 55;
+  if (combined.length > 500) overall += 10;
+  if (/负责|主导|优化|提升/.test(combined)) overall += 10;
+  overall = Math.min(92, Math.max(45, overall));
+  const base = Math.round(overall / 20);
+  let rating = overall >= 85 ? "Strong Hire" : overall >= 70 ? "Hire" : overall >= 55 ? "Weak Hire" : "No Hire";
+  const keys = ["professional", "project", "communication", "fit", "growth"];
+  return {
+    overallScore: overall, rating,
+    dimensions: keys.map((k, i) => ({
+      key: k, score: Math.max(1, Math.min(5, base + (i === 0 ? 1 : 0))),
+      evidence: [`基于输入材料的${DIMENSION_LABELS[k].label}评估`],
+    })),
+    followUps: [
+      { id: "fu-1", question: "请详细描述你的核心项目角色？", focus: "验证真实性", expectedDirection: "清晰说明职责" },
+      { id: "fu-2", question: "遇到的最大挑战及解决方案？", focus: "问题解决", expectedDirection: "具体案例" },
+      { id: "fu-3", question: "3 年职业规划？", focus: "匹配度", expectedDirection: "目标清晰" },
+    ],
+    redFlags: [],
+    summary: `${input.candidateName} 应聘 ${input.positionTitle}，综合 ${overall} 分（${rating}）。建议${overall >= 70 ? "进入下一轮" : "谨慎推进"}。`,
+    generatedAt: new Date().toISOString(), isMock: true,
+  };
+}
+
+function extractJson(text) {
+  const t = text.trim();
+  const m = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  const s = m ? m[1].trim() : t;
+  const start = s.indexOf("{"), end = s.lastIndexOf("}");
+  return JSON.parse(s.slice(start, end + 1));
+}
+
+async function callAI(input) {
+  const settings = loadSettings();
+  if (!settings.apiKey) return { report: generateMock(input), mode: "mock", message: "未配置 API Key，使用模拟评估。点击右上角「设置」配置。" };
+
+  const userMsg = `评估候选人：${input.candidateName}，岗位：${input.positionTitle}\n\n简历：\n${input.resume}\n\nJD：\n${input.jobDescription}\n\n面试记录：\n${input.interviewNotes}\n\n输出 JSON。`;
+
+  try {
+    const res = await fetch(`${settings.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${settings.apiKey}` },
+      body: JSON.stringify({
+        model: settings.model,
+        messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: userMsg }],
+        temperature: 0.3, max_tokens: 4096,
+      }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    const content = data.choices?.[0]?.message?.content;
+    const parsed = extractJson(content);
+    parsed.followUps = (parsed.followUps || []).map((f, i) => ({ ...f, id: "fu-" + i }));
+    parsed.redFlags = (parsed.redFlags || []).map((r, i) => ({ ...r, id: "rf-" + i }));
+    parsed.generatedAt = new Date().toISOString();
+    return { report: parsed, mode: "ai" };
+  } catch (e) {
+    return {
+      report: generateMock(input), mode: "fallback",
+      message: `AI 调用失败（${e.message}）。请先运行 python api-proxy.py，并在设置中配置代理地址。已使用模拟评估。`,
+    };
+  }
+}
+
+let state = loadState();
+let route = location.hash.slice(1) || "landing";
+let modal = null;
+
+function navigate(r) {
+  route = r;
+  location.hash = r;
+  render();
+}
+
+window.addEventListener("hashchange", () => { route = location.hash.slice(1) || "landing"; render(); });
+
+function renderHeader() {
+  if (route === "landing") return "";
+  const roles = ["hr", "interviewer", "hiring_manager"];
+  return `<header><div class="header-inner">
+    <div style="display:flex;align-items:center;gap:24px">
+      <a href="#dashboard" class="logo"><div class="logo-icon">IE</div>InterviewEval</a>
+      <nav>
+        <a href="#dashboard" class="${route === "dashboard" ? "active" : ""}">评估看板</a>
+        <a href="#tasks/new" class="${route === "tasks/new" ? "active" : ""}">创建任务</a>
+        <a href="#settings" class="${route === "settings" ? "active" : ""}">设置</a>
+      </nav>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="role-switch">${roles.map(r =>
+        `<button class="${state.currentUser.role === r ? "active" : ""}" onclick="switchRole('${r}')">${ROLE_LABELS[r]}</button>`
+      ).join("")}</div>
+      <span style="font-size:13px;font-weight:500">${esc(state.currentUser.name)}</span>
+    </div>
+  </div></header>`;
+}
+
+window.switchRole = function(role) {
+  state.currentUser = state.team.find(m => m.role === role) || state.team[0];
+  saveState(state);
+  render();
+};
+
+function renderLanding() {
+  return `<div class="landing">
+    <div style="max-width:1120px;margin:0 auto;padding:20px 16px;display:flex;justify-content:space-between;align-items:center">
+      <div class="logo"><div class="logo-icon">IE</div>InterviewEval</div>
+      <a href="#dashboard" class="btn btn-primary">进入工作台</a>
+    </div>
+    <div class="landing-hero">
+      <span class="badge badge-blue">v1.0 MVP · 纯 HTML 版</span>
+      <h1>让面试评估 <span style="color:var(--brand)">标准化、可追溯</span></h1>
+      <p>双击打开即可使用，无需安装 Node.js。支持 DeepSeek AI 评估（需配置代理）。</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="#dashboard" class="btn btn-primary" style="padding:12px 24px">开始使用</a>
+        <a href="#tasks/new" class="btn btn-secondary" style="padding:12px 24px">创建评估任务</a>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-card"><div class="stat-val">&lt;10min</div><div class="stat-label">单候选人评估</div></div>
+      <div class="stat-card"><div class="stat-val">五维</div><div class="stat-label">标准化框架</div></div>
+      <div class="stat-card"><div class="stat-val">0次</div><div class="stat-label">HR 催评语</div></div>
+    </div>
+    <div class="features">
+      ${[["五维标准化评估","专业能力、项目经验、沟通表达、匹配度、成长潜力"],["AI 辅助 + 人工覆盖","面试官可修改评分并记录原因"],["追问建议 & 红线预警","自动生成追问方向和风险检测"],["评估进度看板","待评估 / 已评估 / 已确认"]].map(([t,d]) =>
+        `<div class="feature-card"><h3 style="margin-bottom:8px">${t}</h3><p style="color:var(--ink2);font-size:14px">${d}</p></div>`
+      ).join("")}
+    </div>
+  </div>`;
+}
+
+function renderDashboard() {
+  const filtered = state.currentUser.role === "interviewer"
+    ? state.tasks.filter(t => t.assignedInterviewers.includes(state.currentUser.name))
+    : state.tasks;
+  const cols = [
+    { status: "pending", color: "#f59e0b", label: "待评估" },
+    { status: "evaluated", color: "#3b82f6", label: "已评估" },
+    { status: "confirmed", color: "#10b981", label: "已确认" },
+  ];
+  return `<div class="container">
+    <div class="toolbar">
+      <div><div class="page-title">评估进度看板</div><div class="page-sub">共 ${filtered.length} 个任务</div></div>
+      <a href="#tasks/new" class="btn btn-primary">+ 创建任务</a>
+    </div>
+    <div class="grid-3">${cols.map(c => {
+      const tasks = filtered.filter(t => t.status === c.status);
+      return `<div><div class="col-head"><div class="dot" style="background:${c.color}"></div>${c.label}<span class="badge badge-blue">${tasks.length}</span></div>
+        ${tasks.length ? tasks.map(t => renderTaskCard(t)).join("") : '<div class="empty">暂无任务</div>'}
+      </div>`;
+    }).join("")}</div>
+  </div>`;
+}
+
+function renderTaskCard(t) {
+  const rs = t.report ? RATING_STYLE[t.report.rating] : null;
+  return `<a href="#evaluations/${t.id}" class="task-card ${t.status}">
+    <div style="display:flex;justify-content:space-between"><div>
+      <div style="font-weight:600">${esc(t.candidateName)}</div>
+      <div style="font-size:13px;color:var(--ink2)">${esc(t.positionTitle)}</div>
+    </div>${t.report ? `<span class="badge" style="background:${rs.bg};color:${rs.color}">${t.report.overallScore}</span>` : ""}</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--ink2)">${STATUS_LABELS[t.status]} · ${esc(t.assignedInterviewers.join("、"))}</div>
+  </a>`;
+}
+
+function renderCreateTask() {
+  return `<div class="container" style="max-width:720px">
+    <div class="page-title">创建评估任务</div>
+    <div class="page-sub">上传简历、粘贴 JD、分配面试官</div>
+    <form class="card" onsubmit="createTask(event)">
+      <div class="form-row">
+        <div class="form-group"><label>候选人姓名 *</label><input id="f-name" required placeholder="赵小明" /></div>
+        <div class="form-group"><label>岗位名称 *</label><input id="f-position" required placeholder="高级前端工程师" /></div>
+      </div>
+      <div class="form-group"><label>简历</label><textarea id="f-resume" rows="8" placeholder="粘贴简历内容"></textarea></div>
+      <div class="form-group"><label>岗位 JD</label><textarea id="f-jd" rows="4" placeholder="粘贴岗位描述"></textarea></div>
+      <div class="form-group"><label>分配面试官</label>
+        <div class="chips" id="f-interviewers">${state.team.filter(m=>m.role==="interviewer").map(m =>
+          `<span class="chip" data-name="${esc(m.name)}" onclick="this.classList.toggle('selected')">${esc(m.name)}</span>`
+        ).join("")}</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <a href="#dashboard" class="btn btn-secondary">取消</a>
+        <button type="submit" class="btn btn-primary">创建任务</button>
+      </div>
+    </form>
+  </div>`;
+}
+
+window.createTask = function(e) {
+  e.preventDefault();
+  const selected = [...document.querySelectorAll("#f-interviewers .chip.selected")].map(c => c.dataset.name);
+  const task = {
+    id: genId(),
+    candidateName: document.getElementById("f-name").value.trim(),
+    positionTitle: document.getElementById("f-position").value.trim(),
+    resume: document.getElementById("f-resume").value.trim(),
+    jobDescription: document.getElementById("f-jd").value.trim(),
+    interviewNotes: "", assignedInterviewers: selected.length ? selected : ["李工"],
+    status: "pending", createdBy: state.currentUser.name,
+    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), overrides: [],
+  };
+  state.tasks.unshift(task);
+  saveState(state);
+  navigate("dashboard");
+};
+
+function renderEvaluation(id) {
+  const task = state.tasks.find(t => t.id === id);
+  if (!task) return `<div class="container"><p>任务不存在</p><a href="#dashboard">返回</a></div>`;
+
+  const r = task.report;
+  const rs = r ? RATING_STYLE[r.rating] : null;
+  const canEval = task.assignedInterviewers.includes(state.currentUser.name) || state.currentUser.role !== "interviewer";
+
+  return `<div class="container" style="max-width:960px">
+    <a href="#dashboard" style="font-size:14px">← 返回看板</a>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin:16px 0 24px;flex-wrap:wrap;gap:16px">
+      <div><h1 class="page-title">${esc(task.candidateName)}</h1>
+        <p class="page-sub" style="margin:0">${esc(task.positionTitle)} · ${STATUS_LABELS[task.status]}</p>
+      </div>${r ? `<div style="text-align:right"><div class="rating-lg">${r.overallScore}</div>
+        <span class="badge" style="background:${rs.bg};color:${rs.color};font-size:14px;padding:4px 12px">${r.rating}</span>
+        ${r.isMock ? '<div style="font-size:11px;color:#b45309;margin-top:4px">模拟评估</div>' : ""}
+      </div>` : ""}
+    </div>
+    <div id="eval-notice"></div>
+    <div class="layout-2">
+      <div>
+        <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">简历</h3><div class="pre-box">${esc(task.resume)||"（未提供）"}</div></div>
+        <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">岗位 JD</h3><div class="pre-box">${esc(task.jobDescription)||"（未提供）"}</div></div>
+        <div class="card"><h3 style="margin-bottom:8px">面试记录</h3>
+          <textarea id="eval-notes" rows="8" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px" ${task.status==="confirmed"?"disabled":""}>${esc(task.interviewNotes)}</textarea>
+          ${canEval && task.status !== "confirmed" ? `<button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="generateEval('${id}')" id="gen-btn">生成 AI 评估报告</button>` : ""}
+        </div>
+      </div>
+      <div id="eval-report">${r ? renderReport(task) : '<div class="empty" style="height:200px;display:flex;align-items:center;justify-content:center">填写面试记录后生成报告</div>'}</div>
+    </div>
+  </div>`;
+}
+
+function renderReport(task) {
+  const r = task.report;
+  if (!r) return "";
+  const canEdit = task.status !== "confirmed" && (task.assignedInterviewers.includes(state.currentUser.name) || state.currentUser.role !== "interviewer");
+
+  return `
+    <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">AI 总结</h3><p style="font-size:14px;color:var(--ink2)">${esc(r.summary)}</p></div>
+    <h3 style="margin-bottom:12px;font-size:16px">五维评估</h3>
+    ${r.dimensions.map(d => {
+      const meta = DIMENSION_LABELS[d.key];
+      const eff = getEffectiveScore(d.key, d.score, task.overrides);
+      const ov = task.overrides.find(o => o.dimensionKey === d.key);
+      const sc = eff >= 4 ? "#d1fae5,#047857" : eff >= 3 ? "#dbeafe,#1d4ed8" : "#fef3c7,#b45309";
+      const [bg, col] = sc.split(",");
+      return `<div class="dim-card"><div class="dim-head"><div><div style="font-weight:600">${meta.label}</div><div style="font-size:12px;color:var(--ink2)">${meta.desc}</div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div class="dim-score" style="background:${bg};color:${col}">${eff}</div>
+        ${canEdit ? `<button class="btn btn-sm btn-secondary" onclick="openOverride('${task.id}','${d.key}',${d.score})">修改</button>` : ""}
+        </div></div>
+        <div style="height:6px;background:#e2e8f0;border-radius:999px"><div style="width:${eff/5*100}%;height:100%;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)"></div></div>
+        ${d.evidence.map(e => `<div class="evidence">${esc(e)}</div>`).join("")}
+        ${ov ? `<div class="override-note">已覆盖：AI ${ov.originalScore}→${ov.newScore} · ${esc(ov.reason)} · ${esc(ov.modifiedBy)}</div>` : ""}
+      </div>`;
+    }).join("")}
+    ${r.followUps.length ? `<div class="card" style="margin-top:16px"><h3 style="margin-bottom:12px">追问建议</h3>${r.followUps.map(f =>
+      `<div style="background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px"><div style="font-weight:500">${esc(f.question)}</div><div style="color:var(--ink2);font-size:12px;margin-top:4px">考察：${esc(f.focus)}</div></div>`
+    ).join("")}</div>` : ""}
+    ${r.redFlags.length ? `<div class="card" style="margin-top:16px;border-color:#fecaca;background:#fef2f2"><h3 style="color:#b91c1c;margin-bottom:12px">红线预警</h3>${r.redFlags.map(rf =>
+      `<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px"><span class="badge badge-red">${esc(rf.type)}</span><p style="margin-top:4px">${esc(rf.description)}</p></div>`
+    ).join("")}</div>` : ""}
+    ${canEdit ? `<div class="card" style="margin-top:16px"><h3 style="margin-bottom:8px">确认评估</h3>
+      <textarea id="add-comment" rows="2" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px" placeholder="补充个人判断（可选）">${esc(task.additionalComment||"")}</textarea>
+      <button class="btn btn-success" style="width:100%;margin-top:12px" onclick="confirmEval('${task.id}')">确认评估</button>
+    </div>` : task.status === "confirmed" ? `<div class="card" style="margin-top:16px;background:#ecfdf5;border-color:#a7f3d0"><p style="color:#047857;font-weight:500">已由 ${esc(task.confirmedBy)} 确认</p>${task.additionalComment?`<p style="font-size:14px;margin-top:4px">${esc(task.additionalComment)}</p>`:""}</div>` : ""}`;
+}
+
+window.generateEval = async function(id) {
+  const task = state.tasks.find(t => t.id === id);
+  if (!task) return;
+  const notes = document.getElementById("eval-notes").value;
+  const btn = document.getElementById("gen-btn");
+  btn.textContent = "AI 评估中..."; btn.disabled = true;
+
+  const result = await callAI({
+    candidateName: task.candidateName, positionTitle: task.positionTitle,
+    resume: task.resume, jobDescription: task.jobDescription, interviewNotes: notes,
+  });
+
+  task.interviewNotes = notes;
+  task.report = result.report;
+  task.status = "evaluated";
+  task.overrides = [];
+  task.updatedAt = new Date().toISOString();
+  saveState(state);
+
+  if (result.message) {
+    document.getElementById("eval-notice").innerHTML = `<div class="alert alert-warn">${esc(result.message)}</div>`;
+  }
+  document.getElementById("eval-report").innerHTML = renderReport(task);
+  btn.textContent = "重新生成评估"; btn.disabled = false;
+};
+
+window.confirmEval = function(id) {
+  const task = state.tasks.find(t => t.id === id);
+  if (!task) return;
+  task.status = "confirmed";
+  task.confirmedBy = state.currentUser.name;
+  task.confirmedAt = new Date().toISOString();
+  task.additionalComment = document.getElementById("add-comment")?.value || "";
+  saveState(state);
+  navigate("evaluations/" + id);
+};
+
+window.openOverride = function(taskId, dimKey, origScore) {
+  modal = { taskId, dimKey, origScore, newScore: origScore, reason: "" };
+  renderModal();
+};
+
+function renderModal() {
+  if (!modal) return;
+  const meta = DIMENSION_LABELS[modal.dimKey];
+  const el = document.createElement("div");
+  el.className = "modal-bg";
+  el.innerHTML = `<div class="modal"><h3>覆盖评分 · ${meta.label}</h3><p style="font-size:14px;color:var(--ink2)">AI 原始：${modal.origScore} 分</p>
+    <div class="score-btns">${[1,2,3,4,5].map(s =>
+      `<button class="${modal.newScore===s?"active":""}" onclick="modal.newScore=${s};renderModal()">${s}</button>`
+    ).join("")}</div>
+    <div class="form-group"><label>修改原因 * (${modal.reason.length}/50)</label>
+      <textarea rows="2" maxlength="50" oninput="modal.reason=this.value;document.getElementById('reason-len').textContent=modal.reason.length" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px">${esc(modal.reason)}</textarea>
+      <span id="reason-len" style="font-size:12px;color:var(--ink2)">${modal.reason.length}</span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitOverride()" ${!modal.reason.trim()?"disabled":""}>确认覆盖</button>
+    </div></div>`;
+  el.onclick = e => { if (e.target === el) closeModal(); };
+  document.body.appendChild(el);
+  el.id = "modal-root";
+}
+
+window.closeModal = function() {
+  document.getElementById("modal-root")?.remove();
+  modal = null;
+};
+
+window.submitOverride = function() {
+  if (!modal || !modal.reason.trim()) return;
+  const task = state.tasks.find(t => t.id === modal.taskId);
+  if (!task) return;
+  task.overrides = task.overrides.filter(o => o.dimensionKey !== modal.dimKey);
+  task.overrides.push({
+    dimensionKey: modal.dimKey, originalScore: modal.origScore, newScore: modal.newScore,
+    reason: modal.reason.trim(), modifiedBy: state.currentUser.name, modifiedAt: new Date().toISOString(),
+  });
+  saveState(state);
+  closeModal();
+  navigate("evaluations/" + modal.taskId);
+};
+
+function renderSettings() {
+  const s = loadSettings();
+  return `<div class="container" style="max-width:560px">
+    <div class="page-title">API 设置</div>
+    <div class="page-sub">HTML 版需通过本地代理调用 DeepSeek（解决浏览器 CORS 限制）</div>
+    <div class="alert alert-info" style="margin-bottom:20px">
+      1. 终端运行：<code>python api-proxy.py</code><br>
+      2. 填入下方 API Key 和代理地址<br>
+      3. 未配置时使用模拟评估
+    </div>
+    <form class="card" onsubmit="saveSettingsForm(event)">
+      <div class="form-group"><label>DeepSeek API Key</label><input id="s-key" type="password" value="${esc(s.apiKey)}" placeholder="sk-..." /></div>
+      <div class="form-group"><label>API 地址</label><input id="s-url" value="${esc(s.baseUrl)}" placeholder="http://127.0.0.1:8765/v1" /></div>
+      <div class="form-group"><label>模型</label><input id="s-model" value="${esc(s.model)}" /></div>
+      <button type="submit" class="btn btn-primary">保存设置</button>
+    </form>
+  </div>`;
+}
+
+window.saveSettingsForm = function(e) {
+  e.preventDefault();
+  saveSettings({
+    apiKey: document.getElementById("s-key").value.trim(),
+    baseUrl: document.getElementById("s-url").value.trim(),
+    model: document.getElementById("s-model").value.trim(),
+  });
+  alert("设置已保存");
+};
+
+function render() {
+  closeModal();
+  let content = "";
+  if (route === "landing" || route === "") content = renderLanding();
+  else if (route === "dashboard") content = renderDashboard();
+  else if (route === "tasks/new") content = renderCreateTask();
+  else if (route === "settings") content = renderSettings();
+  else if (route.startsWith("evaluations/")) content = renderEvaluation(route.slice(12));
+  else content = renderLanding();
+
+  document.getElementById("app").innerHTML = renderHeader() + content;
+}
+
+render();
+</script>
+</body>
+</html>
