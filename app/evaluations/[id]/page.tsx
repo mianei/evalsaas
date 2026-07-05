@@ -42,8 +42,8 @@ export default function EvaluationPage({
   if (!task) {
     return (
       <div className="kit-container py-16 text-center">
-        <p className="text-zinc-500">评估任务不存在</p>
-        <Link href="/dashboard" className="mt-4 inline-block text-violet-400 hover:text-violet-300">
+        <p className="text-theme-muted">评估任务不存在</p>
+        <Link href="/dashboard" className="mt-4 inline-block text-violet-500 hover:text-violet-400 dark:text-violet-400">
           返回看板
         </Link>
       </div>
@@ -117,21 +117,21 @@ export default function EvaluationPage({
 
   return (
     <div className="kit-container max-w-5xl py-10">
-      <Link href="/dashboard" className="text-sm text-zinc-500 transition hover:text-white">
+      <Link href="/dashboard" className="text-sm text-theme-muted transition hover:text-theme">
         ← 返回看板
       </Link>
 
       <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-theme">
             {task.candidateName}
           </h1>
-          <p className="mt-1 text-zinc-500">{task.positionTitle}</p>
+          <p className="mt-1 text-theme-muted">{task.positionTitle}</p>
           <div className="mt-2 flex flex-wrap gap-2 text-xs">
-            <span className="rounded-full bg-white/5 px-2.5 py-0.5 text-zinc-400">
+            <span className="rounded-full bg-[var(--color-surface)] px-2.5 py-0.5 text-theme-subtle">
               {STATUS_LABELS[task.status]}
             </span>
-            <span className="text-zinc-600">
+            <span className="text-theme-subtle">
               面试官：{task.assignedInterviewers.join("、")}
             </span>
           </div>
@@ -139,7 +139,7 @@ export default function EvaluationPage({
 
         {report && (
           <div className="text-right">
-            <div className="text-4xl font-bold tracking-tight text-white">
+            <div className="text-4xl font-bold tracking-tight text-theme">
               {report.overallScore}
             </div>
             <span className={cn("mt-1 inline-block rounded-full px-3 py-1 text-sm font-semibold", RATING_DARK[report.rating])}>
@@ -153,34 +153,30 @@ export default function EvaluationPage({
       </div>
 
       {error && (
-        <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-          {error}
-        </div>
+        <div className="kit-alert-err mt-4">{error}</div>
       )}
       {notice && (
-        <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
-          {notice}
-        </div>
+        <div className="kit-alert-warn mt-4">{notice}</div>
       )}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
           <section className="kit-card p-5">
-            <h2 className="font-semibold text-white">简历</h2>
-            <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap text-sm text-zinc-400">
+            <h2 className="font-semibold text-theme">简历</h2>
+            <pre className="kit-pre mt-3 max-h-48">
               {task.resume || "（未提供）"}
             </pre>
           </section>
 
           <section className="kit-card p-5">
-            <h2 className="font-semibold text-white">岗位 JD</h2>
-            <pre className="mt-3 max-h-32 overflow-auto whitespace-pre-wrap text-sm text-zinc-400">
+            <h2 className="font-semibold text-theme">岗位 JD</h2>
+            <pre className="kit-pre mt-3 max-h-32">
               {task.jobDescription || "（未提供）"}
             </pre>
           </section>
 
           <section className="kit-card p-5">
-            <h2 className="font-semibold text-white">面试记录</h2>
+            <h2 className="font-semibold text-theme">面试记录</h2>
             <textarea
               value={interviewNotes}
               onChange={(e) => setInterviewNotes(e.target.value)}
@@ -205,13 +201,13 @@ export default function EvaluationPage({
           {report ? (
             <>
               <section className="kit-card p-5">
-                <h2 className="font-semibold text-white">AI 总结</h2>
-                <p className="mt-3 text-sm leading-relaxed text-zinc-400">{report.summary}</p>
-                <p className="mt-2 text-xs text-zinc-600">生成于 {formatDate(report.generatedAt)}</p>
+                <h2 className="font-semibold text-theme">AI 总结</h2>
+                <p className="mt-3 text-sm leading-relaxed text-theme-muted">{report.summary}</p>
+                <p className="mt-2 text-xs text-theme-subtle">生成于 {formatDate(report.generatedAt)}</p>
               </section>
 
               <section>
-                <h2 className="mb-3 font-semibold text-white">五维评估</h2>
+                <h2 className="mb-3 font-semibold text-theme">五维评估</h2>
                 <div className="space-y-3">
                   {report.dimensions.map((dim) => (
                     <DimensionCard
@@ -233,13 +229,13 @@ export default function EvaluationPage({
 
               {report.followUps.length > 0 && (
                 <section className="kit-card p-5">
-                  <h2 className="font-semibold text-white">追问建议</h2>
+                  <h2 className="font-semibold text-theme">追问建议</h2>
                   <ul className="mt-3 space-y-3">
                     {report.followUps.map((f) => (
-                      <li key={f.id} className="rounded-lg bg-white/5 p-3 text-sm">
-                        <p className="font-medium text-zinc-200">{f.question}</p>
-                        <p className="mt-1 text-xs text-zinc-500">考察点：{f.focus}</p>
-                        <p className="mt-0.5 text-xs text-zinc-600">预期方向：{f.expectedDirection}</p>
+                      <li key={f.id} className="rounded-lg bg-[var(--color-mock-inner)] p-3 text-sm">
+                        <p className="font-medium text-theme">{f.question}</p>
+                        <p className="mt-1 text-xs text-theme-muted">考察点：{f.focus}</p>
+                        <p className="mt-0.5 text-xs text-theme-subtle">预期方向：{f.expectedDirection}</p>
                       </li>
                     ))}
                   </ul>
@@ -259,13 +255,13 @@ export default function EvaluationPage({
                               ? "bg-red-500/20 text-red-400"
                               : rf.severity === "medium"
                                 ? "bg-amber-500/20 text-amber-400"
-                                : "bg-white/5 text-zinc-400"
+                                : "bg-[var(--color-surface)] text-theme-muted"
                           )}
                         >
                           {rf.type}
                         </span>
-                        <p className="mt-1 text-zinc-300">{rf.description}</p>
-                        <p className="mt-1 text-xs text-zinc-500">核实方式：{rf.verificationMethod}</p>
+                        <p className="mt-1 text-theme-muted">{rf.description}</p>
+                        <p className="mt-1 text-xs text-theme-subtle">核实方式：{rf.verificationMethod}</p>
                       </li>
                     ))}
                   </ul>
@@ -274,7 +270,7 @@ export default function EvaluationPage({
 
               {task.status !== "confirmed" && canEvaluate && (
                 <section className="kit-card p-5">
-                  <h2 className="font-semibold text-white">确认评估</h2>
+                  <h2 className="font-semibold text-theme">确认评估</h2>
                   <textarea
                     value={additionalComment}
                     onChange={(e) => setAdditionalComment(e.target.value)}
@@ -306,7 +302,7 @@ export default function EvaluationPage({
               )}
             </>
           ) : (
-            <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-white/10 text-sm text-zinc-600">
+            <div className="kit-empty flex h-64 items-center justify-center">
               填写面试记录后，点击「生成 AI 评估报告」
             </div>
           )}

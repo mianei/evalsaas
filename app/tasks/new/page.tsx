@@ -46,15 +46,15 @@ export default function CreateTaskPage() {
   return (
     <div className="kit-container max-w-3xl py-10">
       <p className="kit-section-label mb-2">新建</p>
-      <h1 className="text-2xl font-bold tracking-tight">创建评估任务</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-2xl font-bold tracking-tight text-theme">创建评估任务</h1>
+      <p className="mt-1 text-sm text-theme-muted">
         上传候选人简历、粘贴 JD，分配给面试官
       </p>
 
       <form onSubmit={handleSubmit} className="kit-card mt-8 space-y-6 p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="text-sm font-medium text-zinc-300">
+            <label className="text-sm font-medium text-theme-muted">
               候选人姓名 <span className="text-red-400">*</span>
             </label>
             <input
@@ -66,7 +66,7 @@ export default function CreateTaskPage() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-zinc-300">
+            <label className="text-sm font-medium text-theme-muted">
               岗位名称 <span className="text-red-400">*</span>
             </label>
             <input
@@ -80,7 +80,7 @@ export default function CreateTaskPage() {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-zinc-300">候选人简历</label>
+          <label className="text-sm font-medium text-theme-muted">候选人简历</label>
           <textarea
             value={resume}
             onChange={(e) => setResume(e.target.value)}
@@ -91,7 +91,7 @@ export default function CreateTaskPage() {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-zinc-300">岗位 JD</label>
+          <label className="text-sm font-medium text-theme-muted">岗位 JD</label>
           <textarea
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
@@ -102,7 +102,7 @@ export default function CreateTaskPage() {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-zinc-300">分配面试官</label>
+          <label className="text-sm font-medium text-theme-muted">分配面试官</label>
           <div className="mt-2 flex flex-wrap gap-2">
             {interviewers.map((m) => (
               <button
@@ -112,8 +112,8 @@ export default function CreateTaskPage() {
                 className={cn(
                   "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                   selectedInterviewers.includes(m.name)
-                    ? "border-white bg-white text-black"
-                    : "border-white/20 text-zinc-400 hover:border-white/40 hover:text-white"
+                    ? "border-[var(--color-btn-primary-bg)] bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
+                    : "border-[var(--color-btn-secondary-border)] text-theme-muted hover:border-[var(--color-border-strong)] hover:text-theme"
                 )}
               >
                 {m.name}

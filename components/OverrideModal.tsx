@@ -27,17 +27,17 @@ export default function OverrideModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md animate-fade-in rounded-2xl border border-white/10 bg-zinc-900 p-6 shadow-2xl">
-        <h3 className="text-lg font-semibold text-white">
+    <div className="fixed inset-0 z-50 kit-modal-bg p-4">
+      <div className="kit-modal animate-fade-in">
+        <h3 className="text-lg font-semibold text-theme">
           覆盖评分 · {meta.label}
         </h3>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-theme-subtle">
           AI 原始评分：{originalScore} 分
         </p>
 
         <div className="mt-4">
-          <label className="text-sm font-medium text-zinc-300">新评分</label>
+          <label className="text-sm font-medium text-theme-muted">新评分</label>
           <div className="mt-2 flex gap-2">
             {[1, 2, 3, 4, 5].map((s) => (
               <button
@@ -46,8 +46,8 @@ export default function OverrideModal({
                 className={cn(
                   "h-10 w-10 rounded-lg text-sm font-bold transition-colors",
                   newScore === s
-                    ? "bg-white text-black"
-                    : "bg-white/5 text-zinc-400 hover:bg-white/10"
+                    ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
+                    : "bg-[var(--color-surface)] text-theme-muted hover:bg-[var(--color-surface-hover)]"
                 )}
               >
                 {s}
@@ -57,9 +57,9 @@ export default function OverrideModal({
         </div>
 
         <div className="mt-4">
-          <label className="text-sm font-medium text-zinc-300">
+          <label className="text-sm font-medium text-theme-muted">
             修改原因 <span className="text-red-400">*</span>
-            <span className="ml-2 font-normal text-zinc-600">
+            <span className="ml-2 font-normal text-theme-subtle">
               {reason.length}/50
             </span>
           </label>

@@ -4,89 +4,180 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>InterviewEval · 面试评估 SaaS v1.0</title>
+<script>(function(){try{var t=localStorage.getItem("interview-eval-theme");var theme=t==="light"?"light":"dark";document.documentElement.setAttribute("data-theme",theme);document.documentElement.style.colorScheme=theme}catch(e){document.documentElement.setAttribute("data-theme","dark");document.documentElement.style.colorScheme="dark"}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--brand:#4f46e5;--brand-light:#eef2ff;--ink:#0f172a;--ink2:#64748b;--line:#e2e8f0;--bg:#f8fafc;--r:12px}
-body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
-a{color:var(--brand);text-decoration:none}
+html[data-theme="dark"],html:not([data-theme]){
+  --bg:#000;--text:#fff;--muted:#a1a1aa;--subtle:#71717a;
+  --border:rgba(255,255,255,.08);--card:rgba(255,255,255,.03);--card-hover:rgba(255,255,255,.05);
+  --header-bg:rgba(0,0,0,.8);--announce-bg:rgba(255,255,255,.02);
+  --btn-primary-bg:#fff;--btn-primary-text:#000;
+  --btn-secondary-text:#fff;--btn-secondary-border:rgba(255,255,255,.2);--btn-secondary-hover:rgba(255,255,255,.05);
+  --logo-bg:#fff;--logo-text:#000;--nav-active:rgba(255,255,255,.1);--nav-hover:rgba(255,255,255,.05);
+  --input-bg:rgba(255,255,255,.04);--input-border:rgba(255,255,255,.1);
+  --role-active-bg:#fff;--role-active-text:#000;
+  --avatar-bg:rgba(139,92,246,.2);--avatar-text:#c4b5fd;
+  --price-highlight-bg:#fff;--price-highlight-text:#000;--price-badge-bg:#000;--price-badge-text:#fff;
+  --mock-bg:#18181b;--mock-inner:rgba(255,255,255,.05);
+  --gradient-text:linear-gradient(135deg,#c4b5fd,#93c5fd,#fff);
+  --gradient-hero:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(139,92,246,.25),transparent),radial-gradient(ellipse 60% 40% at 80% 50%,rgba(59,130,246,.15),transparent);
+  --logo-marquee:#52525b;--icon-bg:rgba(139,92,246,.1);--icon-text:#a78bfa;
+  --toggle-bg:rgba(255,255,255,.08);--toggle-border:rgba(255,255,255,.12);
+  --modal-bg:#18181b;--r:16px;color-scheme:dark;
+}
+html[data-theme="light"]{
+  --bg:#fff;--text:#0a0a0a;--muted:#52525b;--subtle:#71717a;
+  --border:rgba(0,0,0,.08);--card:#fafafa;--card-hover:#f4f4f5;
+  --header-bg:rgba(255,255,255,.85);--announce-bg:#f4f4f5;
+  --btn-primary-bg:#0a0a0a;--btn-primary-text:#fff;
+  --btn-secondary-text:#0a0a0a;--btn-secondary-border:rgba(0,0,0,.15);--btn-secondary-hover:rgba(0,0,0,.04);
+  --logo-bg:#0a0a0a;--logo-text:#fff;--nav-active:rgba(0,0,0,.06);--nav-hover:rgba(0,0,0,.04);
+  --input-bg:#fff;--input-border:rgba(0,0,0,.12);
+  --role-active-bg:#0a0a0a;--role-active-text:#fff;
+  --avatar-bg:rgba(139,92,246,.12);--avatar-text:#7c3aed;
+  --price-highlight-bg:#0a0a0a;--price-highlight-text:#fff;--price-badge-bg:#fff;--price-badge-text:#0a0a0a;
+  --mock-bg:#f4f4f5;--mock-inner:rgba(0,0,0,.04);
+  --gradient-text:linear-gradient(135deg,#7c3aed,#2563eb,#0a0a0a);
+  --gradient-hero:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(139,92,246,.08),transparent),radial-gradient(ellipse 60% 40% at 80% 50%,rgba(59,130,246,.06),transparent);
+  --logo-marquee:#a1a1aa;--icon-bg:rgba(139,92,246,.08);--icon-text:#7c3aed;
+  --toggle-bg:rgba(0,0,0,.04);--toggle-border:rgba(0,0,0,.1);
+  --modal-bg:#fafafa;
+}
+  --modal-bg:#fafafa;color-scheme:light;
+}
+body{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)!important;color:var(--text);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .2s,color .2s}
+.theme-toggle{display:flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 12px;border-radius:9999px;border:1px solid var(--toggle-border);background:var(--toggle-bg);color:var(--muted);cursor:pointer;font-size:13px;line-height:1;white-space:nowrap}
+.theme-toggle:hover{color:var(--text);background:var(--nav-hover)}
+.mock-inner{background:var(--mock-inner);border-radius:8px;padding:8px}
+.preview-panel{background:var(--mock-bg);border-radius:12px;padding:24px}
+.preview-border{border-bottom:1px solid var(--border)}
+.text-muted{color:var(--muted)}
+.text-subtle{color:var(--subtle)}
+.skeleton-bar{height:6px;border-radius:4px;background:var(--border)}
+.announce{padding:8px;text-align:center;font-size:13px;color:var(--muted);border-bottom:1px solid var(--border);background:var(--announce-bg)}
+a{color:inherit;text-decoration:none}
 button,input,textarea,select{font:inherit}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:500;font-size:14px;transition:.15s}
-.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:#4338ca}
-.btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn-secondary:hover{background:#f1f5f9}
-.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
-.btn-sm{padding:4px 10px;font-size:12px}
-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.header-inner{max-width:1120px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}
-.logo-icon{width:32px;height:32px;border-radius:8px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.kit-container{max-width:1200px;margin:0 auto;padding:0 24px}
+.kit-gradient-text{background:var(--gradient-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kit-gradient-bg{background:var(--gradient-hero)}
+.kit-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);transition:border-color .2s,background .2s}
+.kit-card:hover{border-color:var(--border);background:var(--card-hover)}
+.kit-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;background:var(--btn-primary-bg);color:var(--btn-primary-text);font-weight:600;font-size:14px;border-radius:9999px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;text-decoration:none}
+.kit-btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.kit-btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;background:transparent;color:var(--btn-secondary-text);font-weight:500;font-size:14px;border-radius:9999px;border:1px solid var(--btn-secondary-border);cursor:pointer;transition:background .2s;text-decoration:none}
+.kit-btn-secondary:hover{background:var(--btn-secondary-hover)}
+.kit-section-label{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.kit-heading{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;color:var(--text)}
+.kit-subheading{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;letter-spacing:-.02em;line-height:1.2;color:var(--text)}
+.kit-body-lg{font-size:18px;line-height:1.6;color:var(--muted)}
+.kit-input,.kit-textarea{width:100%;padding:12px 16px;background:var(--input-bg);border:1px solid var(--input-border);border-radius:12px;color:var(--text);font-size:14px;outline:none}
+.kit-input:focus,.kit-textarea:focus{border-color:rgba(139,92,246,.5)}
+.kit-input::placeholder,.kit-textarea::placeholder{color:var(--subtle)}
+/* Header app */
+header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);background:var(--header-bg);backdrop-filter:blur(16px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--text)}
+.logo-icon{width:32px;height:32px;border-radius:8px;background:var(--logo-bg);color:var(--logo-text);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
 nav{display:flex;gap:4px}
-nav a{padding:6px 12px;border-radius:8px;font-size:14px;color:var(--ink2);font-weight:500}
-nav a.active,nav a:hover{background:var(--brand-light);color:var(--brand)}
-.role-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff}
-.role-switch button{padding:4px 8px;border:none;background:transparent;border-radius:6px;font-size:11px;cursor:pointer;color:var(--ink2)}
-.role-switch button.active{background:var(--brand);color:#fff}
-.container{max-width:1120px;margin:0 auto;padding:24px 16px}
-.page-title{font-size:24px;font-weight:700;margin-bottom:4px}
-.page-sub{color:var(--ink2);font-size:14px;margin-bottom:24px}
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+nav a{padding:6px 12px;border-radius:8px;font-size:14px;color:var(--muted);font-weight:500;transition:color .15s,background .15s}
+nav a.active,nav a:hover{background:var(--nav-active);color:var(--text)}
+.role-switch{display:flex;gap:2px;border:1px solid var(--border);border-radius:9999px;padding:2px}
+.role-switch button{padding:4px 10px;border:none;background:transparent;border-radius:9999px;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s}
+.role-switch button.active{background:var(--role-active-bg);color:var(--role-active-text)}
+.user-pill{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:9999px;padding:6px 12px;font-size:13px;color:var(--muted)}
+.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--avatar-bg);color:var(--avatar-text);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+/* App pages */
+.page-title{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.page-sub{color:var(--muted);font-size:14px;margin-top:4px}
 .grid-3{display:grid;gap:20px;grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.grid-3{grid-template-columns:1fr}}
-.col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:600;font-size:14px}
-.dot{width:10px;height:10px;border-radius:50%}
-.task-card{display:block;background:#fff;border:1px solid var(--line);border-left:4px solid;border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:box-shadow .15s;color:inherit}
-.task-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.task-card.pending{border-left-color:#f59e0b}
-.task-card.evaluated{border-left-color:#3b82f6}
-.task-card.confirmed{border-left-color:#10b981}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
-.badge-amber{background:#fef3c7;color:#b45309}
-.badge-blue{background:#dbeafe;color:#1d4ed8}
-.badge-green{background:#d1fae5;color:#047857}
-.badge-red{background:#fee2e2;color:#b91c1c}
+.col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:600;font-size:14px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%}
+.task-card{display:block;border-left:4px solid;padding:16px;margin-bottom:10px;cursor:pointer;color:inherit}
+.task-card.pending{border-left-color:#fbbf24}
+.task-card.evaluated{border-left-color:#60a5fa}
+.task-card.confirmed{border-left-color:#34d399}
+.badge{display:inline-block;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:600}
+.badge-count,.badge-status{background:var(--card);color:var(--muted)}
 .form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
-.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+.form-group label{display:block;font-size:14px;font-weight:500;margin-bottom:6px;color:var(--muted)}
 .form-row{display:grid;gap:16px;grid-template-columns:1fr 1fr}
 @media(max-width:640px){.form-row{grid-template-columns:1fr}}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;cursor:pointer;background:#fff}
-.chip.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
-.dim-card{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px;background:#fff}
+.chip{padding:6px 16px;border:1px solid var(--btn-secondary-border);border-radius:9999px;font-size:13px;cursor:pointer;color:var(--muted);transition:all .15s}
+.chip.selected{border-color:var(--btn-primary-bg);background:var(--btn-primary-bg);color:var(--btn-primary-text)}
+[data-theme="light"] .alert-warn{color:#d97706}
+[data-theme="light"] .override-note{color:#b45309}
+.modal{background:var(--modal-bg);border:1px solid var(--border);color:var(--text)}
+.score-btns button{border:1px solid var(--border);background:var(--card);color:var(--text)}
+.score-btns button.active{background:var(--btn-primary-bg);color:var(--btn-primary-text);border-color:var(--btn-primary-bg)}
+.pre-box{background:var(--input-bg)}
+.dim-card{border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;background:var(--card)}
 .dim-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .dim-score{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
-.score-bar{height:6px;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);margin:8px 0}
-.score-fill{height:100%;border-radius:999px;background:inherit}
-.evidence{font-size:13px;color:var(--ink2);padding-left:12px;border-left:2px solid #c7d2fe;margin-top:4px}
-.override-note{margin-top:8px;padding:8px;background:#fffbeb;border-radius:6px;font-size:12px;color:#92400e}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
-.modal{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.evidence{font-size:13px;color:var(--muted);padding-left:12px;border-left:2px solid rgba(139,92,246,.5);margin-top:4px}
+.override-note{margin-top:8px;padding:8px;background:rgba(245,158,11,.1);border-radius:8px;font-size:12px;color:#fcd34d}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal{border-radius:16px;padding:24px;width:100%;max-width:420px}
 .modal h3{font-size:18px;margin-bottom:12px}
 .score-btns{display:flex;gap:8px;margin:12px 0}
-.score-btns button{width:40px;height:40px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700}
-.score-btns button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-.landing{min-height:100vh;background:linear-gradient(180deg,#eef2ff,#fff 40%,#f8fafc)}
-.landing-hero{text-align:center;padding:80px 16px 40px;max-width:720px;margin:0 auto}
-.landing-hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.2;margin:16px 0}
-.landing-hero p{color:var(--ink2);font-size:17px;margin-bottom:32px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:640px;margin:48px auto;padding:0 16px}
-.stat-card{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.stat-val{font-size:28px;font-weight:800;color:var(--brand)}
-.stat-label{font-size:13px;color:var(--ink2);margin-top:4px}
-.features{max-width:960px;margin:0 auto;padding:40px 16px 80px;display:grid;gap:16px;grid-template-columns:1fr 1fr}
-@media(max-width:640px){.features{grid-template-columns:1fr}}
-.feature-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
-.empty{border:2px dashed var(--line);border-radius:var(--r);padding:32px;text-align:center;color:var(--ink2);font-size:14px}
+.score-btns button{width:40px;height:40px;border-radius:8px;cursor:pointer;font-weight:700}
+.pre-box{border-radius:8px;padding:12px;font-size:13px;white-space:pre-wrap;max-height:200px;overflow:auto;color:var(--muted)}
+.rating-lg{font-size:36px;font-weight:800;letter-spacing:-.02em}
+.alert{padding:12px 16px;border-radius:12px;font-size:14px;margin-bottom:16px}
+.alert-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#fcd34d}
+.alert-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.alert-info{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#93c5fd}
+.empty{border:2px dashed var(--border);border-radius:var(--r);padding:32px;text-align:center;color:var(--subtle);font-size:14px}
 .layout-2{display:grid;gap:20px;grid-template-columns:1fr 1fr}
 @media(max-width:900px){.layout-2{grid-template-columns:1fr}}
-.pre-box{background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;white-space:pre-wrap;max-height:200px;overflow:auto;color:var(--ink2)}
-.rating-lg{font-size:36px;font-weight:800}
-.alert{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px}
-.alert-warn{background:#fffbeb;color:#92400e}
-.alert-err{background:#fef2f2;color:#b91c1c}
-.alert-info{background:#eff6ff;color:#1d4ed8}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px}
 .hidden{display:none!important}
-.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+/* Landing */
+.announce,.logo-bar,.section-border{background:var(--announce-bg);border-color:var(--border)}
+.landing-nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);background:var(--header-bg);backdrop-filter:blur(16px)}
+.hero{padding:80px 0 96px}
+.hero-grid{display:grid;gap:48px;align-items:center}
+@media(min-width:1024px){.hero-grid{grid-template-columns:1fr 1fr}}
+.mock-window{border-radius:12px;background:var(--mock-bg);padding:16px}
+.mock-dots{display:flex;gap:6px;margin-bottom:12px}
+.mock-dots span{width:10px;height:10px;border-radius:50%}
+.logo-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0;overflow:hidden}
+.logo-marquee{display:flex;gap:64px;animation:marquee 30s linear infinite;width:max-content;color:var(--logo-marquee)}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.section{padding:96px 0}
+.section-border{border-top:1px solid var(--border)}
+.features-grid{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:640px){.features-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.features-grid{grid-template-columns:1fr 1fr 1fr}}
+.feature-icon{width:40px;height:40px;border-radius:8px;background:var(--icon-bg);color:var(--icon-text);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:18px}
+.pricing-grid{display:grid;gap:24px;max-width:960px;margin:0 auto}
+@media(min-width:768px){.pricing-grid{grid-template-columns:repeat(3,1fr)}}
+.price-card{padding:24px;border-radius:16px;position:relative}
+.price-card.highlight{background:var(--price-highlight-bg);color:var(--price-highlight-text)}
+.price-card:not(.highlight){background:var(--card);border:1px solid var(--border)}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--price-badge-bg);color:var(--price-badge-text);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:600;white-space:nowrap}
+.price-val{font-size:36px;font-weight:700;letter-spacing:-.02em}
+.testimonials{columns:1;gap:16px}
+@media(min-width:640px){.testimonials{columns:2}}
+@media(min-width:1024px){.testimonials{columns:3}}
+.testimonial-card{break-inside:avoid;margin-bottom:16px;padding:20px}
+.faq-item{padding:20px;cursor:pointer}
+.faq-item summary{font-weight:500;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-answer{margin-top:12px;font-size:14px;color:var(--muted);line-height:1.6}
+.footer-grid{display:grid;gap:40px;padding:64px 0}
+@media(min-width:768px){.footer-grid{grid-template-columns:2fr 1fr 1fr 1fr}}
+.footer-bottom{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-size:13px;color:var(--subtle)}
+.text-center{text-align:center}
+.mb-4{margin-bottom:16px}.mb-6{margin-bottom:24px}.mb-8{margin-bottom:32px}.mb-16{margin-bottom:64px}
+.mt-4{margin-top:16px}.mx-auto{margin-left:auto;margin-right:auto}
+.max-w-xl{max-width:576px}.max-w-2xl{max-width:672px}.max-w-4xl{max-width:896px}
+.flex{display:flex}.flex-wrap{flex-wrap:wrap}.gap-4{gap:16px}.justify-center{justify-content:center}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.glow{position:absolute;border-radius:50%;filter:blur(40px);animation:float 6s ease-in-out infinite;pointer-events:none}
 </style>
 </head>
 <body>
@@ -94,6 +185,20 @@ nav a.active,nav a:hover{background:var(--brand-light);color:var(--brand)}
 <script>
 const STORAGE_KEY = "interview-eval-html-v1";
 const SETTINGS_KEY = "interview-eval-settings";
+const THEME_KEY = "interview-eval-theme";
+
+function getTheme() { return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"; }
+function themeToggleBtn() {
+  const dark = getTheme() === "dark";
+  return `<button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="${dark ? "切换到浅色模式" : "切换到深色模式"}" title="${dark ? "浅色模式" : "深色模式"}">${dark ? "☀ 浅色" : "☽ 深色"}</button>`;
+}
+window.toggleTheme = function() {
+  const next = getTheme() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  document.documentElement.style.colorScheme = next;
+  try { localStorage.setItem(THEME_KEY, next); } catch {}
+  render();
+};
 
 const DIMENSION_LABELS = {
   professional: { label: "专业能力", desc: "岗位所需的硬技能和知识深度" },
@@ -104,10 +209,10 @@ const DIMENSION_LABELS = {
 };
 
 const RATING_STYLE = {
-  "Strong Hire": { bg: "#d1fae5", color: "#047857" },
-  "Hire": { bg: "#dbeafe", color: "#1d4ed8" },
-  "Weak Hire": { bg: "#fef3c7", color: "#b45309" },
-  "No Hire": { bg: "#fee2e2", color: "#b91c1c" },
+  "Strong Hire": { bg: "rgba(16,185,129,.2)", color: "#34d399" },
+  "Hire": { bg: "rgba(59,130,246,.2)", color: "#60a5fa" },
+  "Weak Hire": { bg: "rgba(245,158,11,.2)", color: "#fbbf24" },
+  "No Hire": { bg: "rgba(239,68,68,.2)", color: "#f87171" },
 };
 
 const STATUS_LABELS = { pending: "待评估", evaluated: "已评估", confirmed: "已确认" };
@@ -123,7 +228,7 @@ const DEFAULT_TEAM = [
 const DEMO_TASKS = [
   {
     id: "demo-1", candidateName: "赵小明", positionTitle: "高级前端工程师",
-    resume: `赵小明 | 5年前端开发经验\n\n2021.03 - 至今 | 某互联网 SaaS 公司 | 高级前端工程师\n- 负责 B 端管理后台，React + TypeScript\n- 主导组件库建设，开发效率提升 40%\n- 优化首屏加载，LCP 从 3.2s 降至 1.1s\n\n技能：React, TypeScript, Node.js`,
+    resume: `赵小明 | 5年前端开发经验\n\n2021.03 - 至今 | 某互联网 SaaS 公司 | 高级前端工程师\n- 负责 B 端管理后台，React + TypeScript\n- 主导组件库建设，开发效率提升 40%`,
     jobDescription: "3年以上前端经验，精通 React/TypeScript，有 B 端 SaaS 经验优先",
     interviewNotes: "", assignedInterviewers: ["李工", "王芳"], status: "pending",
     createdBy: "张敏", createdAt: new Date(Date.now()-864e5).toISOString(),
@@ -153,6 +258,39 @@ const DEMO_TASKS = [
   },
 ];
 
+const FEATURES = [
+  ["五维标准化评估", "专业能力、项目经验、沟通表达、匹配度、成长潜力"],
+  ["AI 辅助 + 人工覆盖", "面试官可修改评分并记录原因，持续校准"],
+  ["追问建议 & 红线预警", "自动生成追问方向和风险检测"],
+  ["评估进度看板", "待评估 / 已评估 / 已确认三列 Kanban"],
+  ["团队协作", "提交后才可见他人评估，避免锚定效应"],
+  ["结构化报告导出", "评估报告一键导出 PDF，归档合规"],
+];
+
+const PRICING = [
+  { name: "免费版", price: "¥0", period: "/月", desc: "体验 AI 评估核心能力", features: ["5 次评估/月", "1 个面试官席位", "基础五维评估", "追问建议 & 红线预警"], cta: "免费开始", highlight: false },
+  { name: "团队版", price: "¥299", period: "/月", desc: "中小企业招聘团队首选", features: ["50 次评估/月", "5 个面试官席位", "多候选人对比", "团队协作 & 邮件通知"], cta: "立即升级", highlight: true, badge: "最受欢迎" },
+  { name: "企业版", price: "¥999", period: "/月", desc: "大型团队与定制需求", features: ["200 次评估/月", "不限面试官席位", "API 接入 & SSO", "审计日志 & 优先支持"], cta: "联系销售", highlight: false },
+];
+
+const TESTIMONIALS = [
+  { quote: "以前汇总 5 个面试官的评语要 40 分钟，现在 10 分钟搞定。", name: "张敏", role: "HR 总监" },
+  { quote: "五维框架让我写评语有结构了，不再面完就忘。", name: "李工", role: "技术面试官" },
+  { quote: "AI 评分和资深面试官一致性达 0.82，可以信赖。", name: "陈总", role: "招聘负责人" },
+  { quote: "红线预警帮我们发现两次简历时间线矛盾。", name: "王芳", role: "业务面试官" },
+  { quote: "招错一个人成本 55K，年费不到 10%，ROI 清晰。", name: "刘总", role: "CEO" },
+  { quote: "面试官覆盖机制设计得很好，既辅助又不替代。", name: "赵明", role: "HRBP" },
+];
+
+const FAQ = [
+  { q: "AI 评估会替代面试官吗？", a: "不会。定位为 AI 辅助，所有评分均可被面试官覆盖修正。" },
+  { q: "支持哪些简历格式？", a: "支持 PDF、Markdown 和纯文本粘贴。" },
+  { q: "数据安全如何保障？", a: "企业间 tenant 隔离、HTTPS 加密、支持数据一键删除。" },
+  { q: "免费版有什么限制？", a: "每月 5 次评估、1 个面试官席位，不含团队协作。" },
+];
+
+const LOGOS = ["Acme Corp", "Quantum", "Echo", "Celestial", "Pulse", "Apex"];
+
 const SYSTEM_PROMPT = `你是 InterviewEval 的 AI 评估引擎。基于简历和面试记录生成结构化评估报告。中文输出。
 五维：professional/project/communication/fit/growth，每维 1-5 分。
 rating: Strong Hire(85+)/Hire(70+)/Weak Hire(55+)/No Hire(<55)
@@ -160,47 +298,19 @@ rating: Strong Hire(85+)/Hire(70+)/Weak Hire(55+)/No Hire(<55)
 {"overallScore":78,"rating":"Hire","dimensions":[{"key":"professional","score":4,"evidence":["..."]},...五维],"followUps":[{"question":"...","focus":"...","expectedDirection":"..."}],"redFlags":[{"type":"...","description":"...","verificationMethod":"...","severity":"high|medium|low"}],"summary":"200字总结"}`;
 
 function loadState() {
-  try {
-    const s = localStorage.getItem(STORAGE_KEY);
-    if (s) return JSON.parse(s);
-  } catch {}
+  try { const s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); } catch {}
   return { currentUser: DEFAULT_TEAM[0], team: DEFAULT_TEAM, tasks: DEMO_TASKS };
 }
-
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
+function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 function loadSettings() {
-  try {
-    const s = localStorage.getItem(SETTINGS_KEY);
-    if (s) return JSON.parse(s);
-  } catch {}
+  try { const s = localStorage.getItem(SETTINGS_KEY); if (s) return JSON.parse(s); } catch {}
   return { apiKey: "", baseUrl: "http://127.0.0.1:8765/v1", model: "deepseek-chat" };
 }
-
-function saveSettings(settings) {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-}
-
-function esc(s) {
-  const d = document.createElement("div");
-  d.textContent = s ?? "";
-  return d.innerHTML;
-}
-
-function fmtDate(iso) {
-  return new Date(iso).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-}
-
-function genId() {
-  return Date.now() + "-" + Math.random().toString(36).slice(2, 7);
-}
-
-function getEffectiveScore(key, aiScore, overrides) {
-  const o = overrides.find(x => x.dimensionKey === key);
-  return o ? o.newScore : aiScore;
-}
+function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+function esc(s) { const d = document.createElement("div"); d.textContent = s ?? ""; return d.innerHTML; }
+function fmtDate(iso) { return new Date(iso).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }); }
+function genId() { return Date.now() + "-" + Math.random().toString(36).slice(2, 7); }
+function getEffectiveScore(key, aiScore, overrides) { const o = overrides.find(x => x.dimensionKey === key); return o ? o.newScore : aiScore; }
 
 function generateMock(input) {
   const combined = input.resume + input.interviewNotes + input.jobDescription;
@@ -209,21 +319,18 @@ function generateMock(input) {
   if (/负责|主导|优化|提升/.test(combined)) overall += 10;
   overall = Math.min(92, Math.max(45, overall));
   const base = Math.round(overall / 20);
-  let rating = overall >= 85 ? "Strong Hire" : overall >= 70 ? "Hire" : overall >= 55 ? "Weak Hire" : "No Hire";
+  const rating = overall >= 85 ? "Strong Hire" : overall >= 70 ? "Hire" : overall >= 55 ? "Weak Hire" : "No Hire";
   const keys = ["professional", "project", "communication", "fit", "growth"];
   return {
     overallScore: overall, rating,
-    dimensions: keys.map((k, i) => ({
-      key: k, score: Math.max(1, Math.min(5, base + (i === 0 ? 1 : 0))),
-      evidence: [`基于输入材料的${DIMENSION_LABELS[k].label}评估`],
-    })),
+    dimensions: keys.map((k, i) => ({ key: k, score: Math.max(1, Math.min(5, base + (i === 0 ? 1 : 0))), evidence: [`基于输入材料的${DIMENSION_LABELS[k].label}评估`] })),
     followUps: [
       { id: "fu-1", question: "请详细描述你的核心项目角色？", focus: "验证真实性", expectedDirection: "清晰说明职责" },
       { id: "fu-2", question: "遇到的最大挑战及解决方案？", focus: "问题解决", expectedDirection: "具体案例" },
       { id: "fu-3", question: "3 年职业规划？", focus: "匹配度", expectedDirection: "目标清晰" },
     ],
     redFlags: [],
-    summary: `${input.candidateName} 应聘 ${input.positionTitle}，综合 ${overall} 分（${rating}）。建议${overall >= 70 ? "进入下一轮" : "谨慎推进"}。`,
+    summary: `${input.candidateName} 应聘 ${input.positionTitle}，综合 ${overall} 分（${rating}）。`,
     generatedAt: new Date().toISOString(), isMock: true,
   };
 }
@@ -238,33 +345,23 @@ function extractJson(text) {
 
 async function callAI(input) {
   const settings = loadSettings();
-  if (!settings.apiKey) return { report: generateMock(input), mode: "mock", message: "未配置 API Key，使用模拟评估。点击右上角「设置」配置。" };
-
-  const userMsg = `评估候选人：${input.candidateName}，岗位：${input.positionTitle}\n\n简历：\n${input.resume}\n\nJD：\n${input.jobDescription}\n\n面试记录：\n${input.interviewNotes}\n\n输出 JSON。`;
-
+  if (!settings.apiKey) return { report: generateMock(input), mode: "mock", message: "未配置 API Key，使用模拟评估。前往「设置」配置。" };
+  const userMsg = `评估：${input.candidateName}，岗位：${input.positionTitle}\n简历：\n${input.resume}\nJD：\n${input.jobDescription}\n面试记录：\n${input.interviewNotes}\n输出 JSON。`;
   try {
     const res = await fetch(`${settings.baseUrl}/chat/completions`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${settings.apiKey}` },
-      body: JSON.stringify({
-        model: settings.model,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: userMsg }],
-        temperature: 0.3, max_tokens: 4096,
-      }),
+      body: JSON.stringify({ model: settings.model, messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: userMsg }], temperature: 0.3, max_tokens: 4096 }),
     });
     if (!res.ok) throw new Error(`API ${res.status}`);
     const data = await res.json();
-    const content = data.choices?.[0]?.message?.content;
-    const parsed = extractJson(content);
+    const parsed = extractJson(data.choices?.[0]?.message?.content);
     parsed.followUps = (parsed.followUps || []).map((f, i) => ({ ...f, id: "fu-" + i }));
     parsed.redFlags = (parsed.redFlags || []).map((r, i) => ({ ...r, id: "rf-" + i }));
     parsed.generatedAt = new Date().toISOString();
     return { report: parsed, mode: "ai" };
   } catch (e) {
-    return {
-      report: generateMock(input), mode: "fallback",
-      message: `AI 调用失败（${e.message}）。请先运行 python api-proxy.py，并在设置中配置代理地址。已使用模拟评估。`,
-    };
+    return { report: generateMock(input), mode: "fallback", message: `AI 调用失败（${e.message}）。请运行 python api-proxy.py 并配置代理。` };
   }
 }
 
@@ -272,19 +369,14 @@ let state = loadState();
 let route = location.hash.slice(1) || "landing";
 let modal = null;
 
-function navigate(r) {
-  route = r;
-  location.hash = r;
-  render();
-}
-
+function navigate(r) { route = r; location.hash = r; render(); }
 window.addEventListener("hashchange", () => { route = location.hash.slice(1) || "landing"; render(); });
 
 function renderHeader() {
   if (route === "landing") return "";
   const roles = ["hr", "interviewer", "hiring_manager"];
   return `<header><div class="header-inner">
-    <div style="display:flex;align-items:center;gap:24px">
+    <div style="display:flex;align-items:center;gap:32px">
       <a href="#dashboard" class="logo"><div class="logo-icon">IE</div>InterviewEval</a>
       <nav>
         <a href="#dashboard" class="${route === "dashboard" ? "active" : ""}">评估看板</a>
@@ -293,101 +385,154 @@ function renderHeader() {
       </nav>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
-      <div class="role-switch">${roles.map(r =>
-        `<button class="${state.currentUser.role === r ? "active" : ""}" onclick="switchRole('${r}')">${ROLE_LABELS[r]}</button>`
-      ).join("")}</div>
-      <span style="font-size:13px;font-weight:500">${esc(state.currentUser.name)}</span>
+      ${themeToggleBtn()}
+      <div class="role-switch">${roles.map(r => `<button class="${state.currentUser.role === r ? "active" : ""}" onclick="switchRole('${r}')">${ROLE_LABELS[r]}</button>`).join("")}</div>
+      <div class="user-pill"><div class="user-avatar">${esc(state.currentUser.name[0])}</div>${esc(state.currentUser.name)}</div>
     </div>
   </div></header>`;
 }
 
-window.switchRole = function(role) {
-  state.currentUser = state.team.find(m => m.role === role) || state.team[0];
-  saveState(state);
-  render();
-};
+window.switchRole = function(role) { state.currentUser = state.team.find(m => m.role === role) || state.team[0]; saveState(state); render(); };
 
 function renderLanding() {
-  return `<div class="landing">
-    <div style="max-width:1120px;margin:0 auto;padding:20px 16px;display:flex;justify-content:space-between;align-items:center">
-      <div class="logo"><div class="logo-icon">IE</div>InterviewEval</div>
-      <a href="#dashboard" class="btn btn-primary">进入工作台</a>
-    </div>
-    <div class="landing-hero">
-      <span class="badge badge-blue">v1.0 MVP · 纯 HTML 版</span>
-      <h1>让面试评估 <span style="color:var(--brand)">标准化、可追溯</span></h1>
-      <p>双击打开即可使用，无需安装 Node.js。支持 DeepSeek AI 评估（需配置代理）。</p>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <a href="#dashboard" class="btn btn-primary" style="padding:12px 24px">开始使用</a>
-        <a href="#tasks/new" class="btn btn-secondary" style="padding:12px 24px">创建评估任务</a>
+  return `<div>
+    <div class="announce"><span style="color:var(--text)">v1.0 已发布</span> · AI 辅助面试评估，免费体验 5 次 · <a href="#dashboard" style="color:var(--icon-text)">立即体验 →</a></div>
+    <nav class="landing-nav"><div class="kit-container" style="height:64px;display:flex;align-items:center;justify-content:space-between">
+      <a href="#" class="logo" onclick="navigate('landing');return false"><div class="logo-icon">IE</div>InterviewEval</a>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div style="display:none;gap:32px" class="nav-links-desktop">
+          <a href="#features" style="font-size:14px;color:var(--muted)" onclick="event.preventDefault();document.getElementById('features')?.scrollIntoView({behavior:'smooth'})">功能</a>
+          <a href="#pricing" style="font-size:14px;color:var(--muted)" onclick="event.preventDefault();document.getElementById('pricing')?.scrollIntoView({behavior:'smooth'})">定价</a>
+        </div>
+        ${themeToggleBtn()}
+        <a href="#dashboard" class="kit-btn-primary" style="padding:10px 20px;font-size:13px">免费开始</a>
       </div>
-    </div>
-    <div class="stats">
-      <div class="stat-card"><div class="stat-val">&lt;10min</div><div class="stat-label">单候选人评估</div></div>
-      <div class="stat-card"><div class="stat-val">五维</div><div class="stat-label">标准化框架</div></div>
-      <div class="stat-card"><div class="stat-val">0次</div><div class="stat-label">HR 催评语</div></div>
-    </div>
-    <div class="features">
-      ${[["五维标准化评估","专业能力、项目经验、沟通表达、匹配度、成长潜力"],["AI 辅助 + 人工覆盖","面试官可修改评分并记录原因"],["追问建议 & 红线预警","自动生成追问方向和风险检测"],["评估进度看板","待评估 / 已评估 / 已确认"]].map(([t,d]) =>
-        `<div class="feature-card"><h3 style="margin-bottom:8px">${t}</h3><p style="color:var(--ink2);font-size:14px">${d}</p></div>`
-      ).join("")}
-    </div>
+    </div></nav>
+
+    <section class="hero kit-gradient-bg" style="position:relative;overflow:hidden">
+      <div class="glow" style="width:128px;height:128px;background:rgba(139,92,246,.4);top:40px;right:10%"></div>
+      <div class="kit-container hero-grid">
+        <div>
+          <p class="kit-section-label mb-4">AI 面试评估 SaaS</p>
+          <h1 class="kit-heading mb-6">通往高效<br><span class="kit-gradient-text">招聘决策</span>的路径</h1>
+          <p class="kit-body-lg mb-8">输入简历、面试记录和岗位 JD，AI 输出五维评估报告、追问建议和红线预警。</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#dashboard" class="kit-btn-primary">免费开始</a>
+            <a href="#features" class="kit-btn-secondary" onclick="event.preventDefault();document.getElementById('features')?.scrollIntoView({behavior:'smooth'})">了解更多 →</a>
+          </div>
+        </div>
+        <div style="position:relative">
+          <div class="kit-card mock-window">
+            <div class="mock-dots"><span style="background:#ef4444"></span><span style="background:#eab308"></span><span style="background:#22c55e"></span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+              ${["待评估","已评估","已确认"].map((col,i) => `<div class="mock-inner"><p style="font-size:10px;color:var(--subtle);margin-bottom:8px">${col}</p>${[0,1].map(j => `<div class="mock-inner" style="margin-bottom:6px"><div class="skeleton-bar" style="width:48px"></div>${i===1&&j===0?'<span style="font-size:8px;color:#34d399;margin-top:4px;display:block">82 · Hire</span>':''}</div>`).join("")}</div>`).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-bar"><div class="kit-container"><p class="text-center mb-6 text-subtle" style="font-size:13px">受到创新型团队信赖</p>
+      <div style="overflow:hidden"><div class="logo-marquee">${[...LOGOS,...LOGOS].map(l => `<span style="font-size:18px;font-weight:600;color:var(--logo-marquee);white-space:nowrap">${l}</span>`).join("")}</div></div>
+    </div></section>
+
+    <section class="section"><div class="kit-container text-center">
+      <p class="kit-section-label mb-4">产品预览</p>
+      <h2 class="kit-subheading mb-4">更高效的候选人评估方式</h2>
+      <p class="kit-body-lg mx-auto mb-16 max-w-xl">从简历解析到五维评分，一站式完成面试后评估。</p>
+      <div class="kit-card mx-auto max-w-4xl" style="padding:8px;text-align:left">
+        <div class="preview-panel">
+          <div class="preview-border" style="display:flex;justify-content:space-between;padding-bottom:16px;margin-bottom:16px">
+            <div><h3 style="font-size:18px;font-weight:600;color:var(--text)">孙丽华 · 产品经理</h3><p class="text-subtle" style="font-size:13px">Strong Hire · 综合 82 分</p></div>
+            <span style="background:rgba(16,185,129,.2);color:#34d399;padding:4px 12px;border-radius:9999px;font-size:12px">已评估</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+            ${["专业能力 4","项目经验 4","沟通表达 5","匹配度 3","成长潜力 4"].map(d => { const [n,s] = d.split(" "); return `<div class="mock-inner" style="padding:12px;text-align:center"><p class="text-subtle" style="font-size:11px">${n}</p><p style="font-size:24px;font-weight:700;margin-top:4px;color:var(--text)">${s}</p></div>`; }).join("")}
+          </div>
+        </div>
+      </div>
+    </div></section>
+
+    <section id="features" class="section section-border"><div class="kit-container">
+      <div class="text-center mb-16"><p class="kit-section-label mb-4">核心能力</p><h2 class="kit-subheading">你需要的一切</h2></div>
+      <div class="features-grid">${FEATURES.map(([t,d]) => `<div class="kit-card" style="padding:24px"><div class="feature-icon">✦</div><h3 style="font-weight:600;margin-bottom:8px;color:var(--text)">${t}</h3><p class="text-muted" style="font-size:14px;line-height:1.6">${d}</p></div>`).join("")}</div>
+    </div></section>
+
+    <section id="pricing" class="section section-border"><div class="kit-container">
+      <div class="text-center mb-16"><p class="kit-section-label mb-4">定价</p><h2 class="kit-subheading">选择适合你的方案</h2><p class="kit-body-lg mx-auto mt-4 max-w-xl">招错一个人成本约 55K，SaaS 年费不到 10%。</p></div>
+      <div class="pricing-grid">${PRICING.map(p => `<div class="price-card ${p.highlight?'highlight':'kit-card'}">
+        ${p.badge?`<span class="price-badge">${p.badge}</span>`:''}
+        <h3 style="font-weight:600">${p.name}</h3>
+        <div style="margin-top:16px;display:flex;align-items:baseline;gap:4px"><span class="price-val">${p.price}</span><span class="text-subtle">${p.period}</span></div>
+        <p class="text-muted" style="font-size:13px;margin-top:8px">${p.desc}</p>
+        <ul style="margin:24px 0;list-style:none">${p.features.map(f => `<li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:var(--icon-text)">✓</span>${f}</li>`).join("")}</ul>
+        <a href="#dashboard" class="${p.highlight?'kit-btn-primary':'kit-btn-secondary'}" style="display:block;text-align:center;width:100%">${p.cta}</a>
+      </div>`).join("")}</div>
+    </div></section>
+
+    <section class="section section-border"><div class="kit-container">
+      <div class="text-center mb-16"><p class="kit-section-label mb-4">客户评价</p><h2 class="kit-subheading">用户怎么说</h2></div>
+      <div class="testimonials">${TESTIMONIALS.map(t => `<div class="kit-card testimonial-card"><p class="text-muted" style="font-size:14px;line-height:1.6;margin-bottom:16px">"${esc(t.quote)}"</p><div style="display:flex;align-items:center;gap:12px"><div class="user-avatar" style="width:36px;height:36px">${esc(t.name[0])}</div><div><p style="font-size:13px;font-weight:500;color:var(--text)">${esc(t.name)}</p><p class="text-subtle" style="font-size:11px">${esc(t.role)}</p></div></div></div>`).join("")}</div>
+    </div></section>
+
+    <section class="section section-border"><div class="kit-container max-w-2xl mx-auto">
+      <div class="text-center mb-12"><p class="kit-section-label mb-4">FAQ</p><h2 class="kit-subheading">常见问题</h2></div>
+      ${FAQ.map(f => `<details class="kit-card faq-item mb-4"><summary style="color:var(--text)">${esc(f.q)}<span class="text-subtle">▼</span></summary><p class="faq-answer">${esc(f.a)}</p></details>`).join("")}
+    </div></section>
+
+    <section class="section section-border" style="position:relative;overflow:hidden">
+      <div class="glow" style="width:160px;height:160px;background:rgba(139,92,246,.3);left:15%;top:0"></div>
+      <div class="kit-container text-center" style="position:relative">
+        <h2 class="kit-subheading mb-4">今天免费开始</h2>
+        <p class="kit-body-lg mx-auto mb-8 max-w-xl">每月 5 次免费评估，无需信用卡。</p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a href="#dashboard" class="kit-btn-primary">免费开始</a>
+          <a href="#tasks/new" class="kit-btn-secondary">创建评估任务</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="section-border"><div class="kit-container footer-grid">
+      <div><div class="logo mb-4"><div class="logo-icon">IE</div>InterviewEval</div><p class="text-subtle" style="font-size:13px;max-width:280px">面向中小企业招聘场景的 AI 候选人评估工具。</p></div>
+      ${[["产品",["功能","定价","更新日志"]],["公司",["关于","博客","联系"]],["资源",["文档","API","帮助"]]].map(([t,links]) => `<div><h4 style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text)">${t}</h4>${links.map(l => `<p class="text-subtle" style="font-size:13px;margin-bottom:8px"><a href="#" class="text-subtle">${l}</a></p>`).join("")}</div>`).join("")}
+    </div><div class="kit-container footer-bottom">© 2026 InterviewEval. All rights reserved.</div></footer>
   </div>`;
 }
 
 function renderDashboard() {
-  const filtered = state.currentUser.role === "interviewer"
-    ? state.tasks.filter(t => t.assignedInterviewers.includes(state.currentUser.name))
-    : state.tasks;
-  const cols = [
-    { status: "pending", color: "#f59e0b", label: "待评估" },
-    { status: "evaluated", color: "#3b82f6", label: "已评估" },
-    { status: "confirmed", color: "#10b981", label: "已确认" },
-  ];
-  return `<div class="container">
-    <div class="toolbar">
-      <div><div class="page-title">评估进度看板</div><div class="page-sub">共 ${filtered.length} 个任务</div></div>
-      <a href="#tasks/new" class="btn btn-primary">+ 创建任务</a>
-    </div>
-    <div class="grid-3">${cols.map(c => {
-      const tasks = filtered.filter(t => t.status === c.status);
-      return `<div><div class="col-head"><div class="dot" style="background:${c.color}"></div>${c.label}<span class="badge badge-blue">${tasks.length}</span></div>
-        ${tasks.length ? tasks.map(t => renderTaskCard(t)).join("") : '<div class="empty">暂无任务</div>'}
-      </div>`;
-    }).join("")}</div>
-  </div>`;
+  const filtered = state.currentUser.role === "interviewer" ? state.tasks.filter(t => t.assignedInterviewers.includes(state.currentUser.name)) : state.tasks;
+  const cols = [{ status: "pending", color: "#fbbf24", label: "待评估" }, { status: "evaluated", color: "#60a5fa", label: "已评估" }, { status: "confirmed", color: "#34d399", label: "已确认" }];
+  return `<div class="kit-container" style="padding:40px 24px"><div class="toolbar">
+    <div><p class="kit-section-label mb-2">工作台</p><div class="page-title">评估进度看板</div><div class="page-sub">共 ${filtered.length} 个任务</div></div>
+    <a href="#tasks/new" class="kit-btn-primary" style="padding:10px 20px;font-size:13px">+ 创建任务</a>
+  </div><div class="grid-3">${cols.map(c => {
+    const tasks = filtered.filter(t => t.status === c.status);
+    return `<div><div class="col-head"><div class="dot" style="background:${c.color}"></div>${c.label}<span class="badge badge-count">${tasks.length}</span></div>
+      ${tasks.length ? tasks.map(t => renderTaskCard(t)).join("") : '<div class="empty">暂无任务</div>'}</div>`;
+  }).join("")}</div></div>`;
 }
 
 function renderTaskCard(t) {
   const rs = t.report ? RATING_STYLE[t.report.rating] : null;
-  return `<a href="#evaluations/${t.id}" class="task-card ${t.status}">
-    <div style="display:flex;justify-content:space-between"><div>
-      <div style="font-weight:600">${esc(t.candidateName)}</div>
-      <div style="font-size:13px;color:var(--ink2)">${esc(t.positionTitle)}</div>
-    </div>${t.report ? `<span class="badge" style="background:${rs.bg};color:${rs.color}">${t.report.overallScore}</span>` : ""}</div>
-    <div style="margin-top:8px;font-size:12px;color:var(--ink2)">${STATUS_LABELS[t.status]} · ${esc(t.assignedInterviewers.join("、"))}</div>
+  return `<a href="#evaluations/${t.id}" class="kit-card task-card ${t.status}">
+    <div style="display:flex;justify-content:space-between"><div><div style="font-weight:600">${esc(t.candidateName)}</div><div style="font-size:13px;color:#71717a;margin-top:2px">${esc(t.positionTitle)}</div></div>
+    ${t.report ? `<span class="badge" style="background:${rs.bg};color:${rs.color}">${t.report.overallScore}</span>` : ""}</div>
+    <div style="margin-top:12px;font-size:12px;color:#71717a"><span class="badge badge-status">${STATUS_LABELS[t.status]}</span> · ${esc(t.assignedInterviewers.join("、"))}</div>
   </a>`;
 }
 
 function renderCreateTask() {
-  return `<div class="container" style="max-width:720px">
-    <div class="page-title">创建评估任务</div>
-    <div class="page-sub">上传简历、粘贴 JD、分配面试官</div>
-    <form class="card" onsubmit="createTask(event)">
-      <div class="form-row">
-        <div class="form-group"><label>候选人姓名 *</label><input id="f-name" required placeholder="赵小明" /></div>
-        <div class="form-group"><label>岗位名称 *</label><input id="f-position" required placeholder="高级前端工程师" /></div>
-      </div>
-      <div class="form-group"><label>简历</label><textarea id="f-resume" rows="8" placeholder="粘贴简历内容"></textarea></div>
-      <div class="form-group"><label>岗位 JD</label><textarea id="f-jd" rows="4" placeholder="粘贴岗位描述"></textarea></div>
-      <div class="form-group"><label>分配面试官</label>
-        <div class="chips" id="f-interviewers">${state.team.filter(m=>m.role==="interviewer").map(m =>
-          `<span class="chip" data-name="${esc(m.name)}" onclick="this.classList.toggle('selected')">${esc(m.name)}</span>`
-        ).join("")}</div>
-      </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px">
-        <a href="#dashboard" class="btn btn-secondary">取消</a>
-        <button type="submit" class="btn btn-primary">创建任务</button>
+  return `<div class="kit-container" style="padding:40px 24px;max-width:720px">
+    <p class="kit-section-label mb-2">新建</p><div class="page-title">创建评估任务</div><div class="page-sub mb-8">上传简历、粘贴 JD、分配面试官</div>
+    <form class="kit-card" style="padding:24px" onsubmit="createTask(event)">
+      <div class="form-row"><div class="form-group"><label>候选人姓名 *</label><input id="f-name" required class="kit-input" placeholder="赵小明" /></div>
+      <div class="form-group"><label>岗位名称 *</label><input id="f-position" required class="kit-input" placeholder="高级前端工程师" /></div></div>
+      <div class="form-group"><label>简历</label><textarea id="f-resume" rows="8" class="kit-textarea" placeholder="粘贴简历内容"></textarea></div>
+      <div class="form-group"><label>岗位 JD</label><textarea id="f-jd" rows="4" class="kit-textarea" placeholder="粘贴岗位描述"></textarea></div>
+      <div class="form-group"><label>分配面试官</label><div class="chips" id="f-interviewers">${state.team.filter(m=>m.role==="interviewer").map(m => `<span class="chip" data-name="${esc(m.name)}" onclick="this.classList.toggle('selected')">${esc(m.name)}</span>`).join("")}</div></div>
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:8px">
+        <a href="#dashboard" class="kit-btn-secondary" style="padding:10px 20px;font-size:13px">取消</a>
+        <button type="submit" class="kit-btn-primary" style="padding:10px 20px;font-size:13px;border:none;cursor:pointer">创建任务</button>
       </div>
     </form>
   </div>`;
@@ -396,47 +541,33 @@ function renderCreateTask() {
 window.createTask = function(e) {
   e.preventDefault();
   const selected = [...document.querySelectorAll("#f-interviewers .chip.selected")].map(c => c.dataset.name);
-  const task = {
-    id: genId(),
-    candidateName: document.getElementById("f-name").value.trim(),
-    positionTitle: document.getElementById("f-position").value.trim(),
-    resume: document.getElementById("f-resume").value.trim(),
-    jobDescription: document.getElementById("f-jd").value.trim(),
-    interviewNotes: "", assignedInterviewers: selected.length ? selected : ["李工"],
-    status: "pending", createdBy: state.currentUser.name,
-    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), overrides: [],
-  };
-  state.tasks.unshift(task);
-  saveState(state);
-  navigate("dashboard");
+  state.tasks.unshift({ id: genId(), candidateName: document.getElementById("f-name").value.trim(), positionTitle: document.getElementById("f-position").value.trim(), resume: document.getElementById("f-resume").value.trim(), jobDescription: document.getElementById("f-jd").value.trim(), interviewNotes: "", assignedInterviewers: selected.length ? selected : ["李工"], status: "pending", createdBy: state.currentUser.name, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), overrides: [] });
+  saveState(state); navigate("dashboard");
 };
+
+function scoreStyle(s) {
+  return s >= 4 ? "rgba(16,185,129,.2),#34d399" : s >= 3 ? "rgba(59,130,246,.2),#60a5fa" : "rgba(245,158,11,.2),#fbbf24";
+}
 
 function renderEvaluation(id) {
   const task = state.tasks.find(t => t.id === id);
-  if (!task) return `<div class="container"><p>任务不存在</p><a href="#dashboard">返回</a></div>`;
-
-  const r = task.report;
-  const rs = r ? RATING_STYLE[r.rating] : null;
+  if (!task) return `<div class="kit-container" style="padding:40px"><p style="color:#71717a">任务不存在</p><a href="#dashboard" style="color:#a78bfa">返回</a></div>`;
+  const r = task.report, rs = r ? RATING_STYLE[r.rating] : null;
   const canEval = task.assignedInterviewers.includes(state.currentUser.name) || state.currentUser.role !== "interviewer";
-
-  return `<div class="container" style="max-width:960px">
-    <a href="#dashboard" style="font-size:14px">← 返回看板</a>
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin:16px 0 24px;flex-wrap:wrap;gap:16px">
-      <div><h1 class="page-title">${esc(task.candidateName)}</h1>
-        <p class="page-sub" style="margin:0">${esc(task.positionTitle)} · ${STATUS_LABELS[task.status]}</p>
-      </div>${r ? `<div style="text-align:right"><div class="rating-lg">${r.overallScore}</div>
-        <span class="badge" style="background:${rs.bg};color:${rs.color};font-size:14px;padding:4px 12px">${r.rating}</span>
-        ${r.isMock ? '<div style="font-size:11px;color:#b45309;margin-top:4px">模拟评估</div>' : ""}
-      </div>` : ""}
+  return `<div class="kit-container" style="padding:40px 24px;max-width:960px">
+    <a href="#dashboard" style="font-size:14px;color:#71717a">← 返回看板</a>
+    <div style="display:flex;justify-content:space-between;margin:24px 0;flex-wrap:wrap;gap:16px">
+      <div><h1 class="page-title">${esc(task.candidateName)}</h1><p class="page-sub">${esc(task.positionTitle)} · ${STATUS_LABELS[task.status]}</p></div>
+      ${r ? `<div style="text-align:right"><div class="rating-lg">${r.overallScore}</div><span class="badge" style="background:${rs.bg};color:${rs.color};font-size:14px;padding:6px 14px">${r.rating}</span>${r.isMock?'<p style="font-size:11px;color:#fbbf24;margin-top:4px">模拟评估</p>':''}</div>` : ""}
     </div>
     <div id="eval-notice"></div>
     <div class="layout-2">
       <div>
-        <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">简历</h3><div class="pre-box">${esc(task.resume)||"（未提供）"}</div></div>
-        <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">岗位 JD</h3><div class="pre-box">${esc(task.jobDescription)||"（未提供）"}</div></div>
-        <div class="card"><h3 style="margin-bottom:8px">面试记录</h3>
-          <textarea id="eval-notes" rows="8" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px" ${task.status==="confirmed"?"disabled":""}>${esc(task.interviewNotes)}</textarea>
-          ${canEval && task.status !== "confirmed" ? `<button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="generateEval('${id}')" id="gen-btn">生成 AI 评估报告</button>` : ""}
+        <div class="kit-card" style="padding:20px;margin-bottom:16px"><h3 style="margin-bottom:8px;font-weight:600">简历</h3><div class="pre-box">${esc(task.resume)||"（未提供）"}</div></div>
+        <div class="kit-card" style="padding:20px;margin-bottom:16px"><h3 style="margin-bottom:8px;font-weight:600">岗位 JD</h3><div class="pre-box">${esc(task.jobDescription)||"（未提供）"}</div></div>
+        <div class="kit-card" style="padding:20px"><h3 style="margin-bottom:8px;font-weight:600">面试记录</h3>
+          <textarea id="eval-notes" rows="8" class="kit-textarea" ${task.status==="confirmed"?"disabled":""}>${esc(task.interviewNotes)}</textarea>
+          ${canEval && task.status !== "confirmed" ? `<button class="kit-btn-primary" style="width:100%;margin-top:12px;border:none;cursor:pointer" onclick="generateEval('${id}')" id="gen-btn">生成 AI 评估报告</button>` : ""}
         </div>
       </div>
       <div id="eval-report">${r ? renderReport(task) : '<div class="empty" style="height:200px;display:flex;align-items:center;justify-content:center">填写面试记录后生成报告</div>'}</div>
@@ -445,149 +576,90 @@ function renderEvaluation(id) {
 }
 
 function renderReport(task) {
-  const r = task.report;
-  if (!r) return "";
+  const r = task.report; if (!r) return "";
   const canEdit = task.status !== "confirmed" && (task.assignedInterviewers.includes(state.currentUser.name) || state.currentUser.role !== "interviewer");
-
   return `
-    <div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:8px">AI 总结</h3><p style="font-size:14px;color:var(--ink2)">${esc(r.summary)}</p></div>
-    <h3 style="margin-bottom:12px;font-size:16px">五维评估</h3>
+    <div class="kit-card" style="padding:20px;margin-bottom:16px"><h3 style="font-weight:600;margin-bottom:8px">AI 总结</h3><p style="font-size:14px;color:#a1a1aa;line-height:1.6">${esc(r.summary)}</p></div>
+    <h3 style="font-weight:600;margin-bottom:12px">五维评估</h3>
     ${r.dimensions.map(d => {
-      const meta = DIMENSION_LABELS[d.key];
-      const eff = getEffectiveScore(d.key, d.score, task.overrides);
-      const ov = task.overrides.find(o => o.dimensionKey === d.key);
-      const sc = eff >= 4 ? "#d1fae5,#047857" : eff >= 3 ? "#dbeafe,#1d4ed8" : "#fef3c7,#b45309";
-      const [bg, col] = sc.split(",");
-      return `<div class="dim-card"><div class="dim-head"><div><div style="font-weight:600">${meta.label}</div><div style="font-size:12px;color:var(--ink2)">${meta.desc}</div></div>
+      const meta = DIMENSION_LABELS[d.key], eff = getEffectiveScore(d.key, d.score, task.overrides), ov = task.overrides.find(o => o.dimensionKey === d.key);
+      const [bg,col] = scoreStyle(eff).split(",");
+      return `<div class="dim-card"><div class="dim-head"><div><div style="font-weight:600">${meta.label}</div><div style="font-size:12px;color:#71717a">${meta.desc}</div></div>
         <div style="display:flex;align-items:center;gap:8px"><div class="dim-score" style="background:${bg};color:${col}">${eff}</div>
-        ${canEdit ? `<button class="btn btn-sm btn-secondary" onclick="openOverride('${task.id}','${d.key}',${d.score})">修改</button>` : ""}
-        </div></div>
-        <div style="height:6px;background:#e2e8f0;border-radius:999px"><div style="width:${eff/5*100}%;height:100%;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)"></div></div>
+        ${canEdit ? `<button class="kit-btn-secondary" style="padding:4px 10px;font-size:11px" onclick="openOverride('${task.id}','${d.key}',${d.score})">修改</button>` : ""}</div></div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:999px"><div style="width:${eff/5*100}%;height:100%;border-radius:999px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)"></div></div>
         ${d.evidence.map(e => `<div class="evidence">${esc(e)}</div>`).join("")}
-        ${ov ? `<div class="override-note">已覆盖：AI ${ov.originalScore}→${ov.newScore} · ${esc(ov.reason)} · ${esc(ov.modifiedBy)}</div>` : ""}
-      </div>`;
+        ${ov ? `<div class="override-note">已覆盖：AI ${ov.originalScore}→${ov.newScore} · ${esc(ov.reason)}</div>` : ""}</div>`;
     }).join("")}
-    ${r.followUps.length ? `<div class="card" style="margin-top:16px"><h3 style="margin-bottom:12px">追问建议</h3>${r.followUps.map(f =>
-      `<div style="background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px"><div style="font-weight:500">${esc(f.question)}</div><div style="color:var(--ink2);font-size:12px;margin-top:4px">考察：${esc(f.focus)}</div></div>`
-    ).join("")}</div>` : ""}
-    ${r.redFlags.length ? `<div class="card" style="margin-top:16px;border-color:#fecaca;background:#fef2f2"><h3 style="color:#b91c1c;margin-bottom:12px">红线预警</h3>${r.redFlags.map(rf =>
-      `<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px"><span class="badge badge-red">${esc(rf.type)}</span><p style="margin-top:4px">${esc(rf.description)}</p></div>`
-    ).join("")}</div>` : ""}
-    ${canEdit ? `<div class="card" style="margin-top:16px"><h3 style="margin-bottom:8px">确认评估</h3>
-      <textarea id="add-comment" rows="2" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px" placeholder="补充个人判断（可选）">${esc(task.additionalComment||"")}</textarea>
-      <button class="btn btn-success" style="width:100%;margin-top:12px" onclick="confirmEval('${task.id}')">确认评估</button>
-    </div>` : task.status === "confirmed" ? `<div class="card" style="margin-top:16px;background:#ecfdf5;border-color:#a7f3d0"><p style="color:#047857;font-weight:500">已由 ${esc(task.confirmedBy)} 确认</p>${task.additionalComment?`<p style="font-size:14px;margin-top:4px">${esc(task.additionalComment)}</p>`:""}</div>` : ""}`;
+    ${r.followUps.length ? `<div class="kit-card" style="padding:20px;margin-top:16px"><h3 style="font-weight:600;margin-bottom:12px">追问建议</h3>${r.followUps.map(f => `<div style="background:rgba(255,255,255,.05);border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px"><div style="font-weight:500">${esc(f.question)}</div><div style="color:#71717a;font-size:12px;margin-top:4px">考察：${esc(f.focus)}</div></div>`).join("")}</div>` : ""}
+    ${r.redFlags.length ? `<div style="border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.05);border-radius:16px;padding:20px;margin-top:16px"><h3 style="color:#f87171;font-weight:600;margin-bottom:12px">红线预警</h3>${r.redFlags.map(rf => `<div class="kit-card" style="padding:12px;margin-bottom:8px;font-size:13px"><span style="background:rgba(239,68,68,.2);color:#f87171;padding:2px 8px;border-radius:4px;font-size:11px">${esc(rf.type)}</span><p style="margin-top:8px;color:#d4d4d8">${esc(rf.description)}</p></div>`).join("")}</div>` : ""}
+    ${canEdit ? `<div class="kit-card" style="padding:20px;margin-top:16px"><h3 style="font-weight:600;margin-bottom:8px">确认评估</h3>
+      <textarea id="add-comment" rows="2" class="kit-textarea" placeholder="补充个人判断（可选）">${esc(task.additionalComment||"")}</textarea>
+      <button onclick="confirmEval('${task.id}')" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:9999px;background:#10b981;color:#000;font-weight:600;cursor:pointer">确认评估</button></div>` :
+      task.status === "confirmed" ? `<div style="border:1px solid rgba(16,185,129,.2);background:rgba(16,185,129,.05);border-radius:16px;padding:20px;margin-top:16px"><p style="color:#34d399;font-weight:500">已由 ${esc(task.confirmedBy)} 确认</p>${task.additionalComment?`<p style="font-size:14px;color:#6ee7b7;margin-top:8px">${esc(task.additionalComment)}</p>`:""}</div>` : ""}`;
 }
 
 window.generateEval = async function(id) {
-  const task = state.tasks.find(t => t.id === id);
-  if (!task) return;
+  const task = state.tasks.find(t => t.id === id); if (!task) return;
   const notes = document.getElementById("eval-notes").value;
-  const btn = document.getElementById("gen-btn");
-  btn.textContent = "AI 评估中..."; btn.disabled = true;
-
-  const result = await callAI({
-    candidateName: task.candidateName, positionTitle: task.positionTitle,
-    resume: task.resume, jobDescription: task.jobDescription, interviewNotes: notes,
-  });
-
-  task.interviewNotes = notes;
-  task.report = result.report;
-  task.status = "evaluated";
-  task.overrides = [];
-  task.updatedAt = new Date().toISOString();
-  saveState(state);
-
-  if (result.message) {
-    document.getElementById("eval-notice").innerHTML = `<div class="alert alert-warn">${esc(result.message)}</div>`;
-  }
+  const btn = document.getElementById("gen-btn"); btn.textContent = "AI 评估中..."; btn.disabled = true;
+  const result = await callAI({ candidateName: task.candidateName, positionTitle: task.positionTitle, resume: task.resume, jobDescription: task.jobDescription, interviewNotes: notes });
+  task.interviewNotes = notes; task.report = result.report; task.status = "evaluated"; task.overrides = []; task.updatedAt = new Date().toISOString(); saveState(state);
+  if (result.message) document.getElementById("eval-notice").innerHTML = `<div class="alert alert-warn">${esc(result.message)}</div>`;
   document.getElementById("eval-report").innerHTML = renderReport(task);
   btn.textContent = "重新生成评估"; btn.disabled = false;
 };
 
 window.confirmEval = function(id) {
-  const task = state.tasks.find(t => t.id === id);
-  if (!task) return;
-  task.status = "confirmed";
-  task.confirmedBy = state.currentUser.name;
-  task.confirmedAt = new Date().toISOString();
-  task.additionalComment = document.getElementById("add-comment")?.value || "";
-  saveState(state);
-  navigate("evaluations/" + id);
+  const task = state.tasks.find(t => t.id === id); if (!task) return;
+  task.status = "confirmed"; task.confirmedBy = state.currentUser.name; task.confirmedAt = new Date().toISOString();
+  task.additionalComment = document.getElementById("add-comment")?.value || ""; saveState(state); navigate("evaluations/" + id);
 };
 
-window.openOverride = function(taskId, dimKey, origScore) {
-  modal = { taskId, dimKey, origScore, newScore: origScore, reason: "" };
-  renderModal();
-};
+window.openOverride = function(taskId, dimKey, origScore) { modal = { taskId, dimKey, origScore, newScore: origScore, reason: "" }; renderModal(); };
 
 function renderModal() {
   if (!modal) return;
+  document.getElementById("modal-root")?.remove();
   const meta = DIMENSION_LABELS[modal.dimKey];
-  const el = document.createElement("div");
-  el.className = "modal-bg";
-  el.innerHTML = `<div class="modal"><h3>覆盖评分 · ${meta.label}</h3><p style="font-size:14px;color:var(--ink2)">AI 原始：${modal.origScore} 分</p>
-    <div class="score-btns">${[1,2,3,4,5].map(s =>
-      `<button class="${modal.newScore===s?"active":""}" onclick="modal.newScore=${s};renderModal()">${s}</button>`
-    ).join("")}</div>
-    <div class="form-group"><label>修改原因 * (${modal.reason.length}/50)</label>
-      <textarea rows="2" maxlength="50" oninput="modal.reason=this.value;document.getElementById('reason-len').textContent=modal.reason.length" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px">${esc(modal.reason)}</textarea>
-      <span id="reason-len" style="font-size:12px;color:var(--ink2)">${modal.reason.length}</span>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px">
-      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
-      <button class="btn btn-primary" onclick="submitOverride()" ${!modal.reason.trim()?"disabled":""}>确认覆盖</button>
+  const el = document.createElement("div"); el.className = "modal-bg"; el.id = "modal-root";
+  el.innerHTML = `<div class="modal"><h3>覆盖评分 · ${meta.label}</h3><p style="font-size:14px;color:#71717a;margin-top:4px">AI 原始：${modal.origScore} 分</p>
+    <div class="score-btns">${[1,2,3,4,5].map(s => `<button class="${modal.newScore===s?"active":""}" onclick="modal.newScore=${s};renderModal()">${s}</button>`).join("")}</div>
+    <div class="form-group"><label>修改原因 * (${modal.reason.length}/50)</label><textarea rows="2" maxlength="50" class="kit-textarea" oninput="modal.reason=this.value;document.getElementById('reason-len').textContent=modal.reason.length">${esc(modal.reason)}</textarea><span id="reason-len" style="font-size:12px;color:#71717a">${modal.reason.length}</span></div>
+    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:16px">
+      <button class="kit-btn-secondary" style="padding:10px 20px;font-size:13px" onclick="closeModal()">取消</button>
+      <button class="kit-btn-primary" style="padding:10px 20px;font-size:13px;border:none" onclick="submitOverride()" ${!modal.reason.trim()?"disabled style='opacity:.5'":""}>确认覆盖</button>
     </div></div>`;
   el.onclick = e => { if (e.target === el) closeModal(); };
   document.body.appendChild(el);
-  el.id = "modal-root";
 }
 
-window.closeModal = function() {
-  document.getElementById("modal-root")?.remove();
-  modal = null;
-};
-
+window.closeModal = function() { document.getElementById("modal-root")?.remove(); modal = null; };
 window.submitOverride = function() {
   if (!modal || !modal.reason.trim()) return;
-  const task = state.tasks.find(t => t.id === modal.taskId);
-  if (!task) return;
+  const task = state.tasks.find(t => t.id === modal.taskId); if (!task) return;
   task.overrides = task.overrides.filter(o => o.dimensionKey !== modal.dimKey);
-  task.overrides.push({
-    dimensionKey: modal.dimKey, originalScore: modal.origScore, newScore: modal.newScore,
-    reason: modal.reason.trim(), modifiedBy: state.currentUser.name, modifiedAt: new Date().toISOString(),
-  });
-  saveState(state);
-  closeModal();
-  navigate("evaluations/" + modal.taskId);
+  task.overrides.push({ dimensionKey: modal.dimKey, originalScore: modal.origScore, newScore: modal.newScore, reason: modal.reason.trim(), modifiedBy: state.currentUser.name, modifiedAt: new Date().toISOString() });
+  saveState(state); closeModal(); navigate("evaluations/" + modal.taskId);
 };
 
 function renderSettings() {
   const s = loadSettings();
-  return `<div class="container" style="max-width:560px">
-    <div class="page-title">API 设置</div>
-    <div class="page-sub">HTML 版需通过本地代理调用 DeepSeek（解决浏览器 CORS 限制）</div>
-    <div class="alert alert-info" style="margin-bottom:20px">
-      1. 终端运行：<code>python api-proxy.py</code><br>
-      2. 填入下方 API Key 和代理地址<br>
-      3. 未配置时使用模拟评估
-    </div>
-    <form class="card" onsubmit="saveSettingsForm(event)">
-      <div class="form-group"><label>DeepSeek API Key</label><input id="s-key" type="password" value="${esc(s.apiKey)}" placeholder="sk-..." /></div>
-      <div class="form-group"><label>API 地址</label><input id="s-url" value="${esc(s.baseUrl)}" placeholder="http://127.0.0.1:8765/v1" /></div>
-      <div class="form-group"><label>模型</label><input id="s-model" value="${esc(s.model)}" /></div>
-      <button type="submit" class="btn btn-primary">保存设置</button>
+  return `<div class="kit-container" style="padding:40px 24px;max-width:560px">
+    <p class="kit-section-label mb-2">配置</p><div class="page-title">API 设置</div><div class="page-sub mb-6">HTML 版需本地代理调用 DeepSeek</div>
+    <div class="alert alert-info mb-6">1. 运行 <code>python api-proxy.py</code><br>2. 填入 API Key 和代理地址<br>3. 未配置时使用模拟评估</div>
+    <form class="kit-card" style="padding:24px" onsubmit="saveSettingsForm(event)">
+      <div class="form-group"><label>DeepSeek API Key</label><input id="s-key" type="password" class="kit-input" value="${esc(s.apiKey)}" placeholder="sk-..." /></div>
+      <div class="form-group"><label>API 地址</label><input id="s-url" class="kit-input" value="${esc(s.baseUrl)}" /></div>
+      <div class="form-group"><label>模型</label><input id="s-model" class="kit-input" value="${esc(s.model)}" /></div>
+      <button type="submit" class="kit-btn-primary" style="border:none;cursor:pointer">保存设置</button>
     </form>
   </div>`;
 }
 
 window.saveSettingsForm = function(e) {
   e.preventDefault();
-  saveSettings({
-    apiKey: document.getElementById("s-key").value.trim(),
-    baseUrl: document.getElementById("s-url").value.trim(),
-    model: document.getElementById("s-model").value.trim(),
-  });
+  saveSettings({ apiKey: document.getElementById("s-key").value.trim(), baseUrl: document.getElementById("s-url").value.trim(), model: document.getElementById("s-model").value.trim() });
   alert("设置已保存");
 };
 
@@ -600,7 +672,6 @@ function render() {
   else if (route === "settings") content = renderSettings();
   else if (route.startsWith("evaluations/")) content = renderEvaluation(route.slice(12));
   else content = renderLanding();
-
   document.getElementById("app").innerHTML = renderHeader() + content;
 }
 

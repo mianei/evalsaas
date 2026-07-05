@@ -235,8 +235,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   if (!hydrated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-theme">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-text)] border-t-transparent" />
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const LOGOS = ["Acme Corp", "Quantum", "Echo", "Celestial", "Pulse", "Apex"];
 
@@ -111,41 +112,40 @@ const FAQ = [
 
 function Shape3D({ className }: { className?: string }) {
   return (
-    <div className={`pointer-events-none absolute ${className}`}>
-      <div className="h-32 w-32 rounded-full bg-gradient-to-br from-violet-500/40 to-blue-500/30 blur-2xl animate-float" />
-    </div>
+    <div className={`kit-glow h-32 w-32 ${className ?? ""}`} />
   );
 }
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Announcement bar */}
-      <div className="border-b border-white/5 bg-white/[0.02] py-2 text-center text-sm text-zinc-400">
-        <span className="text-white">v1.0 已发布</span>
+    <div className="min-h-screen bg-theme text-theme">
+      <div className="kit-announce">
+        <span className="text-theme">v1.0 已发布</span>
         <span className="mx-2">·</span>
         AI 辅助面试评估，免费体验 5 次
-        <Link href="/dashboard" className="ml-2 text-violet-400 hover:text-violet-300">
+        <Link href="/dashboard" className="ml-2 text-[#7c3aed] hover:opacity-80">
           立即体验 →
         </Link>
       </div>
 
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-white/5 bg-black/80 backdrop-blur-xl">
+      <nav className="kit-header">
         <div className="kit-container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-black">IE</div>
+          <Link href="/" className="flex items-center gap-2.5 text-theme">
+            <div className="kit-logo-icon">IE</div>
             <span className="font-semibold tracking-tight">InterviewEval</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#features" className="text-sm text-zinc-400 transition hover:text-white">功能</a>
-            <a href="#pricing" className="text-sm text-zinc-400 transition hover:text-white">定价</a>
-            <a href="#testimonials" className="text-sm text-zinc-400 transition hover:text-white">客户评价</a>
-            <a href="#faq" className="text-sm text-zinc-400 transition hover:text-white">FAQ</a>
+            <a href="#features" className="kit-nav-link">功能</a>
+            <a href="#pricing" className="kit-nav-link">定价</a>
+            <a href="#testimonials" className="kit-nav-link">客户评价</a>
+            <a href="#faq" className="kit-nav-link">FAQ</a>
           </div>
-          <Link href="/dashboard" className="kit-btn-primary !px-5 !py-2.5 !text-sm">
-            免费开始
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Link href="/dashboard" className="kit-btn-primary !px-5 !py-2.5 !text-sm">
+              免费开始
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -175,23 +175,23 @@ export default function LandingPage() {
           </div>
           <div className="relative animate-fade-in">
             <div className="kit-card overflow-hidden p-1">
-              <div className="rounded-xl bg-zinc-900 p-4">
+              <div className="kit-mock p-4">
                 <div className="mb-3 flex items-center gap-2">
                   <div className="h-3 w-3 rounded-full bg-red-500/80" />
                   <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
                   <div className="h-3 w-3 rounded-full bg-green-500/80" />
-                  <span className="ml-2 text-xs text-zinc-500">评估看板</span>
+                  <span className="ml-2 text-xs text-theme-subtle">评估看板</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {["待评估", "已评估", "已确认"].map((col, i) => (
-                    <div key={col} className="rounded-lg bg-white/5 p-2">
-                      <p className="mb-2 text-[10px] font-medium text-zinc-400">{col}</p>
+                    <div key={col} className="kit-mock-inner p-2">
+                      <p className="mb-2 text-[10px] font-medium text-theme-muted">{col}</p>
                       {[0, 1].map((j) => (
-                        <div key={j} className="mb-1.5 rounded-md bg-white/5 p-2">
-                          <div className="h-1.5 w-12 rounded bg-white/20" />
-                          <div className="mt-1 h-1 w-8 rounded bg-white/10" />
+                        <div key={j} className="kit-mock-inner mb-1.5 p-2">
+                          <div className="h-1.5 w-12 rounded opacity-30 bg-current" />
+                          <div className="mt-1 h-1 w-8 rounded opacity-20 bg-current" />
                           {i === 1 && j === 0 && (
-                            <span className="mt-1 inline-block rounded-full bg-emerald-500/20 px-1.5 py-0.5 text-[8px] text-emerald-400">82 · Hire</span>
+                            <span className="mt-1 inline-block rounded-full bg-emerald-500/20 px-1.5 py-0.5 text-[8px] text-emerald-500">82 · Hire</span>
                           )}
                         </div>
                       ))}
@@ -206,13 +206,13 @@ export default function LandingPage() {
       </section>
 
       {/* Logo bar */}
-      <section className="border-y border-white/5 py-10">
+      <section className="kit-section-border py-10">
         <div className="kit-container overflow-hidden">
-          <p className="mb-6 text-center text-sm text-zinc-500">受到创新型团队信赖</p>
+          <p className="mb-6 text-center text-sm text-theme-subtle">受到创新型团队信赖</p>
           <div className="flex overflow-hidden">
             <div className="logo-marquee flex shrink-0 gap-16">
               {[...LOGOS, ...LOGOS].map((logo, i) => (
-                <span key={i} className="shrink-0 text-lg font-semibold tracking-tight text-zinc-600">{logo}</span>
+                <span key={i} className="shrink-0 text-lg font-semibold tracking-tight" style={{ color: "var(--color-logo-marquee)" }}>{logo}</span>
               ))}
             </div>
           </div>
@@ -226,19 +226,19 @@ export default function LandingPage() {
           <h2 className="kit-subheading mx-auto mb-4 max-w-2xl">更高效的候选人评估方式</h2>
           <p className="kit-body-lg mx-auto mb-16 max-w-xl">从简历解析到五维评分，从追问建议到红线预警，一站式完成面试后评估。</p>
           <div className="kit-card mx-auto max-w-4xl overflow-hidden p-2">
-            <div className="rounded-xl bg-zinc-900/80 p-6 text-left">
-              <div className="mb-6 flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="kit-mock p-6 text-left">
+              <div className="mb-6 flex items-center justify-between border-b border-theme pb-4">
                 <div>
-                  <h3 className="text-lg font-semibold">孙丽华 · 产品经理</h3>
-                  <p className="text-sm text-zinc-500">Strong Hire · 综合 82 分</p>
+                  <h3 className="text-lg font-semibold text-theme">孙丽华 · 产品经理</h3>
+                  <p className="text-sm text-theme-subtle">Strong Hire · 综合 82 分</p>
                 </div>
-                <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-medium text-emerald-400">已评估</span>
+                <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-medium text-emerald-600">已评估</span>
               </div>
               <div className="grid gap-3 sm:grid-cols-5">
                 {["专业能力 4", "项目经验 4", "沟通表达 5", "匹配度 3", "成长潜力 4"].map((d) => (
-                  <div key={d} className="rounded-lg bg-white/5 p-3 text-center">
-                    <p className="text-xs text-zinc-500">{d.split(" ")[0]}</p>
-                    <p className="mt-1 text-2xl font-bold">{d.split(" ")[1]}</p>
+                  <div key={d} className="kit-mock-inner p-3 text-center">
+                    <p className="text-xs text-theme-subtle">{d.split(" ")[0]}</p>
+                    <p className="mt-1 text-2xl font-bold text-theme">{d.split(" ")[1]}</p>
                   </div>
                 ))}
               </div>
@@ -248,7 +248,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="border-t border-white/5 py-24">
+      <section id="features" className="kit-section-border py-24">
         <div className="kit-container">
           <div className="mb-16 text-center">
             <p className="kit-section-label mb-4">核心能力</p>
@@ -258,11 +258,9 @@ export default function LandingPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <div key={f.title} className="kit-card p-6">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                  {f.icon}
-                </div>
-                <h3 className="mb-2 font-semibold">{f.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">{f.desc}</p>
+                <div className="kit-feature-icon">{f.icon}</div>
+                <h3 className="mb-2 font-semibold text-theme">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-theme-muted">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -270,7 +268,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="border-t border-white/5 py-24">
+      <section id="pricing" className="kit-section-border py-24">
         <div className="kit-container">
           <div className="mb-16 text-center">
             <p className="kit-section-label mb-4">定价</p>
@@ -281,38 +279,30 @@ export default function LandingPage() {
             {PRICING.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl p-6 ${
-                  plan.highlight
-                    ? "bg-white text-black"
-                    : "kit-card"
-                }`}
+                className={`relative rounded-2xl p-6 ${plan.highlight ? "kit-price-highlight" : "kit-card"}`}
               >
                 {plan.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-black px-3 py-1 text-xs font-medium text-white">
+                  <span className="kit-price-badge absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-xs font-medium">
                     {plan.badge}
                   </span>
                 )}
                 <h3 className="font-semibold">{plan.name}</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-bold tracking-tight">{plan.price}</span>
-                  <span className={plan.highlight ? "text-zinc-600" : "text-zinc-500"}>{plan.period}</span>
+                  <span className="text-theme-muted">{plan.period}</span>
                 </div>
-                <p className={`mt-2 text-sm ${plan.highlight ? "text-zinc-600" : "text-zinc-400"}`}>{plan.desc}</p>
+                <p className="mt-2 text-sm text-theme-muted">{plan.desc}</p>
                 <ul className="my-6 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm">
-                      <svg className={`h-4 w-4 shrink-0 ${plan.highlight ? "text-black" : "text-violet-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      <svg className="h-4 w-4 shrink-0 text-[#7c3aed]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href={plan.href}
-                  className={`block w-full rounded-full py-3 text-center text-sm font-semibold transition ${
-                    plan.highlight
-                      ? "bg-black text-white hover:bg-zinc-800"
-                      : "border border-white/20 hover:bg-white/5"
-                  }`}
+                  className={plan.highlight ? "kit-btn-primary block w-full !py-3 text-center !text-sm" : "kit-btn-secondary block w-full !py-3 text-center !text-sm"}
                 >
                   {plan.cta}
                 </Link>
@@ -323,7 +313,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="border-t border-white/5 py-24">
+      <section id="testimonials" className="kit-section-border py-24">
         <div className="kit-container">
           <div className="mb-16 text-center">
             <p className="kit-section-label mb-4">客户评价</p>
@@ -332,14 +322,12 @@ export default function LandingPage() {
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
             {TESTIMONIALS.map((t) => (
               <div key={t.name} className="kit-card mb-4 break-inside-avoid p-5">
-                <p className="mb-4 text-sm leading-relaxed text-zinc-300">&ldquo;{t.quote}&rdquo;</p>
+                <p className="mb-4 text-sm leading-relaxed text-theme-muted">&ldquo;{t.quote}&rdquo;</p>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-500/20 text-sm font-medium text-violet-300">
-                    {t.avatar}
-                  </div>
+                  <div className="kit-avatar h-9 w-9 text-sm">{t.avatar}</div>
                   <div>
-                    <p className="text-sm font-medium">{t.name}</p>
-                    <p className="text-xs text-zinc-500">{t.role}</p>
+                    <p className="text-sm font-medium text-theme">{t.name}</p>
+                    <p className="text-xs text-theme-subtle">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -349,7 +337,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="border-t border-white/5 py-24">
+      <section id="faq" className="kit-section-border py-24">
         <div className="kit-container max-w-2xl">
           <div className="mb-12 text-center">
             <p className="kit-section-label mb-4">FAQ</p>
@@ -358,11 +346,11 @@ export default function LandingPage() {
           <div className="space-y-4">
             {FAQ.map((item) => (
               <details key={item.q} className="kit-card group p-5">
-                <summary className="cursor-pointer font-medium marker:content-none flex items-center justify-between">
+                <summary className="flex cursor-pointer items-center justify-between font-medium text-theme marker:content-none">
                   {item.q}
-                  <svg className="h-5 w-5 text-zinc-500 transition group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  <svg className="h-5 w-5 text-theme-subtle transition group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-zinc-400">{item.a}</p>
+                <p className="mt-3 text-sm leading-relaxed text-theme-muted">{item.a}</p>
               </details>
             ))}
           </div>
@@ -370,7 +358,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden border-t border-white/5 py-24">
+      <section className="relative overflow-hidden kit-section-border py-24">
         <Shape3D className="left-[15%] top-0" />
         <Shape3D className="right-[15%] bottom-0" />
         <div className="kit-container relative text-center">
@@ -384,14 +372,14 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-16">
+      <footer className="kit-section-border py-16">
         <div className="kit-container grid gap-10 md:grid-cols-5">
           <div className="md:col-span-2">
-            <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-black">IE</div>
+            <div className="mb-4 flex items-center gap-2 text-theme">
+              <div className="kit-logo-icon">IE</div>
               <span className="font-semibold">InterviewEval</span>
             </div>
-            <p className="max-w-xs text-sm text-zinc-500">面向中小企业招聘场景的 AI 候选人评估工具。</p>
+            <p className="max-w-xs text-sm text-theme-subtle">面向中小企业招聘场景的 AI 候选人评估工具。</p>
           </div>
           {[
             { title: "产品", links: ["功能", "定价", "更新日志"] },
@@ -399,16 +387,16 @@ export default function LandingPage() {
             { title: "资源", links: ["文档", "API", "帮助中心"] },
           ].map((col) => (
             <div key={col.title}>
-              <h4 className="mb-4 text-sm font-semibold">{col.title}</h4>
+              <h4 className="mb-4 text-sm font-semibold text-theme">{col.title}</h4>
               <ul className="space-y-2">
                 {col.links.map((l) => (
-                  <li key={l}><a href="#" className="text-sm text-zinc-500 hover:text-white">{l}</a></li>
+                  <li key={l}><a href="#" className="text-sm text-theme-subtle hover:text-theme">{l}</a></li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="kit-container mt-12 border-t border-white/5 pt-8 text-center text-sm text-zinc-600">
+        <div className="kit-container mt-12 kit-section-border pt-8 text-center text-sm text-theme-subtle">
           © 2026 InterviewEval. All rights reserved.
         </div>
       </footer>
